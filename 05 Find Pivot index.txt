@@ -1,0 +1,73 @@
+What given? int nums[]	//what inside? integers
+
+What output? pivot Index
+	What is pivot index?
+		index i where sum of numbers left of nums[i] = sum of numbers right of nums[i]
+
+
+My understanding:
+use belowmethod pivotIndex() for all eleements in num[i]
+for(int i=0 ; i< nums.size; nums++){
+	pivotIndex(i);
+}
+
+//Method
+		pivotIndex(){
+		
+					int leftsum= 0;		//sum of numbers left of nums[i]
+					int rightsum =0		//sum of numbers right of nums[i]
+					for(i=0; i< nums[i] ;i ++)
+							{			//how will we check left_sum for first element? do below loop only if(i!=0)
+						leftsum = leftsum + nums[i];							
+					}	
+					for(i=nums[i+1] ; i< nums.size(); i++){
+						rightsum = rightsum + nums[i];													
+					}
+					if leftsum = rightsum;
+					return i;
+						
+		if i not exists -> return -1
+		if multiple i exist -> return left most i
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Solution:
+nums  = [1, 7, 3, 6 ,5, 6]
+//Main logic: total_sum - left_sum - nums[i] == left_sum
+
+a) create method pivotIndex(int[] nums) {	//What input? nums[]
+	a.1) find total sum, how? loop over array nums
+	int total_sum = 0;
+	for(int i=0 i<nums.length; i++) {
+		total_sum += nums[i-1];
+}	
+	a.2) find left_sum
+	int left_sum = 0;
+	for(int i=0; i< nums;length i++) {
+	  if(i!=0) left_sum += nums[i];	
+	  if(total_sum - left_sum - nums[i] == left_sum) {
+		return i;
+	}
+}
+		return -1;
+	}
+}	
+
++++++++++++++++++++++++
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int total_sum= 0;
+        for(int i=0; i< nums.length; i++) {
+                total_sum += nums[i];
+        }
+        int left_sum = 0;
+        for(int i=0; i<nums.length; i++) {
+              if(i != 0) left_sum += nums[i-1];
+              if(total_sum - left_sum - nums[i] == left_sum){
+                return i;
+        }
+        
+    }
+         return -1;
+    }
+   
+}

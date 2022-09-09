@@ -1,0 +1,198 @@
+What given?
+	linkedlist1= integer1
+	linkedlist2 = integer2
+
+
+
+Pseudo code
+1) create linkedList1 -> store positive integer1 in reverse order
+	ex 1 -> 2 -> 3 = 321
+2) create linkedList2 -> store positive integer2 in reverse order
+3) linkedlist 1 elements + linked list2 elements -> Output in linkedlist 3 elements
+
+What edge cases?
+0) How to create linked list in python?
+	not there in standard library, implement using nodes
+
+
+
+class ListNode:
+	def _init_(self, val= 0, next = None):
+	   self.val = val
+	   self.next = next;
+
+
+1) How big linked list we will need?
+adding two numbers, depends how many digit in 2 no.s respectively
+
+2) What if 2 different digit numbers?  the LL with less nodes, we will add 0
+ l1_val = (l1 != null) ? l1.val : 0;  
+
+3)What if some produces one extra digit, where to store? for ex 7 + 8 = 15
+	add carry in result linked list
+
+
+3) How will we add left to right or right to left?
+	Since 356 = 6 -> 5 -> 3
+	          234 = 4 -> 3 -> 2
+	Add :left to right in linked list	//convinient for us
+
+4) How to add? if a + b > 9, select unit's digit , pass carry over to next node
+5) How to store elements in linked list?
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code
+Given: //listNode definition , node contains val and next
+a) Create class ListNode
+	class   ListNode:
+	 def __init__(self, value, next=None)
+		self.val = val
+		self.next = next
+
+b) Implement class Solution:
+  b.1) create addTwoNumbers method					//what input?self, node l1 and node l2
+	def addTwoNumbers(self,l1: listNode, l2: listNode) -> listNode:
+		b.1.) 	//create a dummy linkedlist	
+			
+			dummy = ListNode	()		//What is dummy? dummy linked list why dummy linked list? store result
+			cur = dummy			//What is cur? pointer to first node of dummy. Why curr? track first element of dummy with pointer cur
+		b.2) 
+			carry = 0		//initial carry = 0
+		b.3) //base condition for adding 2 linked list > while both linked list l1 and l2 not != null
+		       //tackle the corner  case? adding 2+11 or 8 +7 or anything where output has 1 extra node //we forgot about carry after final nodes added
+						if carry is not null ->  continue loop  
+	
+
+			while l1 or l2 or carry:
+			  //have to add left to right
+			 //get v1 and v2 	
+						what if linked list1 and linkedList 2 empty i.e no v1 and v2 value -> set v1 /v2 =0
+			   v1 = l1.val if l1 else 0		//store first digit of l1 only if l1 != 0
+			  v2 =  l2.val if l2 else 0
+			//What after getting 2 values v1 and v2 from l1 and l2? add v1 and v2,  where to store the result?
+					find carry and value for each 2 node's sum
+			val = v1 + v2 + carry
+			carry = val //10
+			val = val%10	
+										
+	
+		b.4) calculate new digit		
+			val =  v1 + v2 + carry
+		b.5) //if new digit >=10 , has carry
+			//get out carry, store carry
+			carry = val /10
+			val = val%10			
+		      //if new digit <10
+			carry = 0
+			val = val%10
+		      //What after we have found val and carry
+
+		b.6) //create new listNode of value = val, where to add this list node? point our linked list pointer (cur.next) to it	
+			cur.next = ListNode(val)
+			//what after adding new node to linked list? 
+			//move cur pointer to this new node
+			cur = cur.next
+
+			//What after moving current pointer? Move l1 and l2 pointer to next node		
+			       l1  = l1.next if l1 else None	
+			       l2  = l2.next if l2 else None 	
+	
+		    //What after all 3 pointers moved?
+		 
+		b.7) return dummy.next
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code in java
+
+NOTE: Whenever we are doing
+		  ListNode new_node = new listNode()
+		We are creating a node  not a linked list	
+
+
+	0) What given?
+		Definition for single linked list ListNode
+		public class ListNode {
+			int val:
+			listNode next:
+			ListNode() {}
+			ListNode(int val, ListNode next) {this.val = val; this.next =next;}
+}
+
+	a) Create class Solution
+	     class Solution
+		a.1) create method add two numbers
+			public ListNode addTwoNumbers(listNode l1 , listNode l2) {	//What input? 2  listNode linkedlists  l1 and l2
+		       a.2)  create a dummy linked list listNode
+			  ListNode dummy_head = new ListNode(0);
+			  ListNode l3 = dummy_head	;	
+
+			   int carry = 0;			
+		       a.3)	   while(l1!=null || l2!= null) || 	) {
+			        //extract values from 2 current nodes 
+			         /store l1 linked list's current value in l1_val oncondition  l1!= null, otherwise value = 0	//Note have to give 0 for matching
+				 l1_val = (l1 != null) ? l1.val : 0;
+				 l2_val = (l1 != null) ? l1.val : 0;    
+
+		     a.4) 	   //calculate sum of 2 extracted values
+			    int current_sum  = l1_val + l2_val + carry
+
+		     a.5) 	    carry = current_sum/10;
+		  	    int last_digit =  current_sum %10
+		
+				//What do we have? 2 extracted values current_sum and last_digit
+				What to do with these values? insert in new linked list
+	                    a.6) 	   //create a new linked list ListNode with only one new digit 
+			  ListNode new_node = new listNode(last_digit)
+   			  
+		   a.7) 	  //what after created new linked list node with value? point l3.next pointer to the new node
+			l3.next = new_node
+		 	
+		  a.8)	//after new_node pointed to byl3.next , move pointer l1 to next node		//if l1 or l2 were null -> means last element , coz pointing to null
+			 if(l1 != null) l1 = l1.next
+			 if(l2 != null) l1 = l2.next
+			l3 = l3.next;			
+		}
+			if(carry >0) {	//if at the end left over carry>0
+			   ListNode  new_node = new ListNode(carry)
+			   l3.next  = new_node;
+			   l3 = l3.next;
+				}
+		//Return address to head of new list
+		return dummy_head.next;
+
+	 }
+}}
+	
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+        
+        ListNode dummy_head = new ListNode(0);
+        ListNode l3 = dummy_head;
+        
+        int carry = 0;        
+        while(l1 !=null || l2 != null) {
+            
+            int l1_val = (l1!= null) ? l1.val : 0;
+            int l2_val = (l2!= null) ? l2.val : 0;
+            
+            int current_sum = l1_val + l2_val + carry;
+            carry = current_sum / 10;
+            int last_digit = current_sum % 10;
+            
+            ListNode new_node = new ListNode(last_digit);
+            l3.next = new_node;
+            
+            if(l1!=null) l1 = l1.next;
+            if(l2!=null) l2 = l2.next;
+            l3 = l3.next;
+        }
+        if(carry >0) {
+            ListNode new_node = new ListNode(carry);
+            l3.next = new_node;
+            l3 = l3.next; 
+        }
+            
+        return dummy_head.next;
+    }
+}

@@ -1,0 +1,18 @@
+What given? array nums
+
+What is runnign sum of array?
+	runningSum[i] = sum(nums[0] - nums[i])
+
+What output? array with running sum for each i
+	nums [runningSum[i]]
+++++++++++++++++++++++++++++++++++++++++++
+Solution:
+class Solution {
+1) create method runningSum	//What input? array nums
+	public int[] runningSum(int[] nums) {
+		1.a) loop over array
+		for(int i=1 ; i< nums.size();++i)			//What impace ++i compared to i++
+		1.b)    nums[i] += nums[i-1];				//note no nums[0] case
+		return nums;
+}
+}

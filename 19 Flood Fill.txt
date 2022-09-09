@@ -1,0 +1,98 @@
+What given?
+	1) image[m][n] //stores what ? pixel value
+	
+	2) what is sr, sc //starting row and starting column
+	    what is color? the color that we have to replace pixels with   // in floodFill() operation	
+
+	//note pixel should be conneted some way 4 dimensionally
+
+What function?
+	flood fill
+	from image[sr][sc]
+		0) what color to fill? variable color
+		1) what total directions from image[sr][sc]= 4 
+		2) what directions can we actual move for floodfill()?
+			only those directions which have another pixel image[i][j] connected
+				condition: image[i][j] color = image[sr][sc] color
+		3) what operation after moving? 
+				change image[i][j] color with specified color	
+		
+
+Test Case:		//array of arrays
+Input: 		Image = [[1, 1, 1], [1, 1, 0], [1,0,1]] , sr = 1 , sc = 1 , color =	2
+			//array of arrays
+Output: 			[[2,2,2],[2,2,0],[2,0,1]]
+
+ sr =1 sc = 1 , color = 2
+make a note, bottom right pixel not colored, because ont connected to 1,1 in anyway 4 dimensionally
+note: similar pixel have same value
+1 1 1	2 2 2
+1 1 0  ->  2 2 0
+1 0 1	2 0 1
+
+Constraitnts:
+	what should allowed m? image.length
+			    n
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Learnings
+How to traverse graphs?	 BFS, DFS
+1) DFS
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1) create class Solution
+a) method to FloodFill() all the nodes //create method floodFill() //What params? image 2d array, sr, sc, newColor //what is newColor? to be changed color for floodFill
+
+	a.1)What to check before flood filling image[sr][sc]? Check its color	
+		if starting pixel = Color return image;	
+	a.2) What after checking? just fill the first pixel. How to fill a pixel? for that another method fill().
+		fill()	//what params ? image, sr,sc, color //what is color?whatever value  present in pixel Image[sr][sc]	 , newcolor //what is newColor? what color to change it to
+		 call the fill() to change color of sr,sc from image[sr][sc] to newColor
+	a.3) return image array
+		}
+b) How to fill one single pixel? Create method void fill()	//what input?int[][] image 2D array, sr,sc, color //old ,  newColor //to be changed
+	
+	How to fill any node, what conditions to check?	
+	b.1)if current node out ofbounds  OR 	color of [sr][sc] is not equal to original color "color". what will we change this to? newColor	
+		if not satisfy -> return
+
+	b.2) if condition satisfy,implies this node is ok to color,Color it,  what wlll we color it to? newColor
+		image[sr][sc] = newColor;
+	b.3) What after coloring this node?, Color4 direction nodes.Why are we not checking if direction node valid to color? We already added that base check in  previous method.   //color of [sr][sc] is not equal to original color "color"
+		fill(image, sr-1, sc ,color, newColor);
+            		fill(image, sr+1, sc ,color, newColor);
+            		fill(image, sr, sc-1 ,color, newColor);
+            		fill(image, sr, sc+1 ,color, newColor);
+	 
+
+
+c) 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code:
+Image = [[1, 1, 1];
+	 [1, 1, 0];
+	 [1, 0, 1];
+
+ sr = 1 , sc = 1 , color =	2
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Working code:
+
+1) class Solution {
+	a)  public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+      		a.1) if(image[sr][sc] == color) return image;
+      		a.2) fill(image,sr,sc, image[sr][sc], color);
+      		a.3) return image;
+    		}
+    
+b) public void fill(int[][] image, int sr,int sc,int color, int newColor){
+       		b.1)  if(sr < 0 || sc < 0 || sr>= image.length || sc>=image[0].length || image[sr][sc] != color)
+        			{
+        	    			return ;
+        			}   
+        		b.2) image[sr][sc] = newColor;
+        		b.3) fill(image, sr-1, sc ,color, newColor);
+        		b.4) fill(image, sr+1, sc ,color, newColor);
+        		b.5) fill(image, sr, sc-1 ,color, newColor);
+        		b.6) fill(image, sr, sc+1 ,color, newColor);
+    }
+}

@@ -1,0 +1,127 @@
+What given?
+1) 	array of integers
+		int nums[]	
+	
+input condition check ://SORTED in descending order
+		     //since elements are sorted we can do binary search over linear search	
+			///easier to look in sorted array
+
+2) int target.
+
+3) input: nums=  [-1,0,3,5,9,12] , target = 9
+
+3) Output: Search (target) in nums[] if exists 		-> output: index in nums
+			           if doesnt exist	-> return -1
+
+
+  output : 4
+
+Q) how to search element in array?
+	a) search from start array	//O(n)
+	b) search from middle	//faster	//O(log(n)	
+	c)  search from end of array	//O(n)
+
+Solution:
+
+Q) note here how we find midpoint?
+int midpoint = left + (right - left)/2;
+Why? to handle integer oveflow errors
+
+could have used left + right /2
+
+
+Q) what if integer is odd? 5/2 = 2
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//basically 3 if /else cases
+class Solution{
+a) Create method search()
+	//what return type?int, what input param? int and nums[]
+	public int search (int[] nums, target) {
+	    a.1) check corner case  if length 0 -> no target found
+	    a.2) define left and right marker elements
+		int left = 0;
+		int right = nums.length -1;
+
+	    a.3) while(left <= right){	//where is midpoint? at any time when left and right are known?
+		a.3.1) find mid point at any time
+		int midpoint = left + (right - left)/2;
+		a.3.2) check if mid point is the target we looking for
+		if(nums[midpoint] == target){
+			 return midpoint	
+		}
+		a.3.3) if value at mid point > target value -> get rid of right sub array
+	}    else if (nums[midpoint} > target) {
+		right =midpoint - 1;
+		a.3.4) else if value at mid point < target value -> get rid of left sub array
+}	     else{
+		left= midpoint +1;
+	}
+}
+	     return -1';
+	}
+}
+	
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Final Codeclass Solution {
+    public int search(int[] nums, int target) {
+        if(nums.length == 0) return -1;
+    
+        int left = 0;
+        int right = nums.length-1;
+    
+        while(left <= right){
+            int midpoint = left + (right-left) /2;
+            if(nums[midpoint] == target) {
+                return midpoint;
+            } else if(nums[midpoint] > target){
+                right = midpoint -1;
+            } else {
+                left = midpoint + 1;
+            }
+        }
+       return -1;
+    }
+}
+++++++++++++++++++++++++++++++++++++++++++++++++
+Recursive method of binary search
+
+class BinarySearch {
+    // Returns index of x if it is present in arr[l..
+    // r], else return -1
+    int binarySearch(int arr[], int l, int r, int x)
+    {
+        if (r >= l) {
+            int mid = l + (r - l) / 2;
+ 
+            // If the element is present at the
+            // middle itself
+         	
+ 
+            // If element is smaller than mid, then
+            // it can only be present in left subarray
+            if (arr[mid] > x)
+                return binarySearch(arr, l, mid - 1, x);
+ 
+            // Else the element can only be present
+            // in right subarray
+            return binarySearch(arr, mid + 1, r, x);
+        }
+ 
+        // We reach here when element is not present
+        // in array
+        return -1;
+    }
+  public static void main(String args[])
+    {
+        BinarySearch ob = new BinarySearch();
+        int arr[] = { 2, 3, 4, 10, 40 };
+        int n = arr.length;
+        int x = 10;
+        int result = ob.binarySearch(arr, 0, n - 1, x);
+        if (result == -1)
+            System.out.println("Element not present");
+        else
+            System.out.println("Element found at index "
+                               + result);
+    }
+}

@@ -1,0 +1,120 @@
+Q1) What given input? binary tree root
+	root is given: in form of level order traversal
+	ex root = [3,9,20,nukk,null,15,7]
+
+	3
+          /	      \
+     9	     20
+	/           \
+              15           7
+
+
+Q2) What output?
+	level order traversal	//left tor right usually
+	ex[[3],[9,20],[15,7]]		
+				//levels separated by bracket
+				//how to represent? list of lists
+
+what does output contain?
+	List1, List2, List3 , List4 ...
+	List1 = level 1 nodes, List2 = level2 nodes
+What to figure out?
+	1) how to get level 1 nodes? by getting children for respective root nodes
+	What queue does? tracks what nodes are yet to be travelled
+	What currentList does? 
+	  how to track root node?
+		create queue -> add to queue -> remove from queue -> add to currentLevel ->the removed element is checked for children nodes
+		-> if children found add them also to queue
+Solution:
+ Create class Solution
+	class Solution {
+		a) //create method levelOrder, return type is List of Lists of Integer
+		public List<List<Integer>> levelOrder(TreeNode root) {
+		  a.1) //Create List of List of integer why?to store level order result
+		   List<List<Integer>> result = new ArrayList<>();
+
+		  a.2) check if input root is null
+		   if(root == null) {
+			return result;
+}	
+		 a.3) How to process tree nodes?Queue.How to create a queue?
+	   	  Queue<TreeNode> queue = new LinkedList<>();
+		
+		a.4) start procssing, add root to queue
+		  queue.add(root);
+		
+		a.5) do below processing only when queue is not empty	
+		while(!queue.isEmpty()) {
+			a.5.1) Find what queue size?		
+			int size =	int size = queue.size();
+			
+			a5.2) Where to store all current level nodes? create list "curremtLevel" using ArrayList
+			List<Integer> currentLevel = 	new ArrayList<>();
+			
+			a5.3) loop over queue, remove from queue, store in current of type TreeNode
+			for(int i=0; i<size; i++){
+				  TreeNode current = queue.remove(); 
+			      a5.3.1) add this current node's value to current_level List
+				currentLevel.add(current.val)	//Integer type
+				
+			     a.5.3.2) check if the current node has left / right child
+				if(current.left != null) {
+				   queue.add(current.left);
+}
+				if(current.right ! = null) {
+				  queue.add(current.right);
+}
+
+			a.5.4) Add this current level list to list of lists
+				result.add(currentLevel);
+}	
+			   
+			
+		a.6) return result;
+}
+			
+}
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Final code:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList();
+        if(root == null) {
+                return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+                int size = queue.size();
+                List<Integer> currentLevel = new ArrayList<>();
+                for(int i=0; i<size; i++){
+                    TreeNode current = queue.remove();
+                    currentLevel.add(current.val);
+                    if(current.left != null){
+                        queue.add(current.left);
+                    }
+                    if(current.right != null){
+                        queue.add(current.right);
+                    }
+                }
+                 result.add(currentLevel);   
+        }
+                return result;
+    }
+}

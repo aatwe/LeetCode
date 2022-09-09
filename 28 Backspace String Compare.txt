@@ -1,0 +1,169 @@
+What given?
+
+
+What input?  
+	string s
+	string t
+
+	What string contains? a,b,c...//characters + #//backspace
+	What backspace means?
+	character before # will not appear in output
+
+What output?
+	true if string s = string t
+	
++++++++++++++++++++++++++++++++++++++++++++
+pseupseu code:
+1) process string s --> without #
+	How to ab#c --> ac?
+	a) convert to char array
+	b) loop -> if # encountered -> track index-1 and index
+		  if another # index encountered -> track its index also
+		  do until another character encountered
+		remove all indexes stored 	
+		Hwo to remove index?
+
+2) process string t ---> without #
+3) compare string s and t
+++++++++++++++++++++++++++++++++++++++++++
+Pseudo code
+1) create 2 pointers to track : start from end
+	S_pointer
+	T_pointer
+
+2) which variable to skip?
+	int S_skips;
+	int T_skips
+
+3) loop and process String s and String t //What loop condition ? both pointer grater than 0	//make sure both complete their path (since back moving is involved)
+	3.1) sub loop and process String s //What condition? S_pointer > 0
+	Checks:
+	 What position we at? S_pointer ->
+	 	  3.1.1)  what if # found at S_pointer
+			3.1.1.1) What if # found? means atleast 1 character is there to skip.how to note down? increment S_skips += 1;
+			how to remove? move S_pointer 1 step behind # character
+			3.1.1.2) S_pointer -=1
+
+	  3.1.2)     else what if normal character found ,
+			 probably hash can be after it. Check if hash is after that character		 
+			how to check if hash is after that letter? S_skips > 0
+			//else if (S_skips > 0)
+			What if hash character after S_pointer?		how to remove this letter also?  remove this character S_pointer, also reduce S_skips
+			3.1.2.1)  S_pointer -= 1;
+			3.1.2.2)  S_skips -= 1;
+	 3.1.3)     else  in any other case break loop		 	
+
+              3.2) Loop and process String t
+		....
+
+4) Compare string  S and string t
+
+5) also compare lengths in case not equal -> return false;
+
+6) decrement S_pointer
+7) decrement T_pointer
++++++++++++++++++++++++++++++++++++++++++++
+Code
+
+class Solution}{
+	public boolean backspaceCompare(String s, String T) {
+	
+1)	int S_pointer = S.length() -1;
+	int T_pointer = T.length() -1;
+
+2)	int S_skips = 0;
+	int T_skips = 0;
+	
+3)	while(S_pointer >=0 || T_pointer >=0) {
+		
+	    3.1)  while(S_pointer >=0) {
+		3.1.1)	 if(S_charAt(S_pointer) == '#') {
+				3.1.1.1) S_skips +=1;
+				3.1.1.2) S_pointer -= 1;
+	   	3.1.2)	}  else if(S_skips > 0) {
+
+				3.1.2.1)	S_pointer -= 1;
+				3.1.2.2)	S_skips -= 1;
+
+	  	3.1.3)       }  else {
+				3.1.3.1)	break;
+		}
+		
+	    3.2)  while(T_pointer >=0) {
+		3.2.1)	 if(T_charAt(T_pointer) == '#') {
+				3.2.1.1) T_skips +=1;
+				3.2.1.2) T_pointer -= 1;
+	   	3.2.2)	}  else if(T_skips > 0) {
+				3.2.2.1) T_pointer -= 1;
+				3.2.2.2)	T_skips -= 1;
+
+		3.2.3)	}  else {
+				3.2.3.1)	break;
+		}
+}
+}
+
+	3.3) if (S_skips >=0 && T_skips >=0 && S.charAt(S_pointer)!= T.charAt(T_pointer)) {
+		return false;
+}	
+4) check if characters in 2 strings not equal
+5) Check if different length of both
+6) S_pointer -= 1; 
+7) T_pointer -=1;
+}
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Working code:
+
+class Solution {
+	public boolean backspaceCompare(String S, String T) {
+	
+	int S_pointer = S.length() - 1;
+	int T_pointer = T.length() - 1;
+
+	int S_skips = 0;
+	int T_skips = 0;
+	
+	while(S_pointer >=0 || T_pointer >=0) {
+		
+	    	while(S_pointer >=0) {
+	        		 if(S.charAt(S_pointer) == '#') {
+			    		   S_skips +=1;
+			     	   	   S_pointer -= 1;
+	 		} else if(S_skips > 0) {
+
+		    	  		   S_pointer -= 1;
+		   	     		   S_skips -= 1;
+		}	 else {
+			      break;
+		   	 }
+       		}
+
+	   	 while(T_pointer >=0) {
+	     		if(S.charAt(T_pointer) == '#') {
+				 T_skips +=1;
+				 T_pointer -= 1;
+	 		}  else if(T_skips > 0) {
+				 T_pointer -= 1;
+				 T_skips -= 1;
+
+			}  else {
+				break;
+		    }
+   		 }	
+        
+ 	 if(S_pointer >= 0 && T_pointer >=0 && S.charAt(S_pointer)!= T.charAt(T_pointer)) {
+     		   return false;
+   	  }    
+        
+  	if((S_pointer >=0)!= (T_pointer >= 0)) {
+    		    return false;
+  	  } 
+        
+   	 S_pointer -=1;
+    	 T_pointer -=1;
+}
+        
+  return true;
+    }
+}

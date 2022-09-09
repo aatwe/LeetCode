@@ -1,0 +1,38 @@
+What given?s and t
+What inside s and t?
+		s //short string: hofsijdfosij	//lower case english letter		// <=100
+		t //long string: aljfdlksajdflkasdflklkn	//lowercase english letter	// ~ 5 lac
+
+
+What is subsequence?
+	letters removed from string 
+		//position of character should not be disturbed
+
+for ex t = abcde
+subsequence s = ace	
+not subseq : aec
+
+What if s =0 -> is a subsequence
+
+0) corner case: if s = 0
+	if(s.length() == 0) return true;
+1)  Create 2 pointers for s and t and initilaize to 0
+	int s_pointer = 0;
+	int t_pointer = 0;	
+
+
+2) loop thorugh t looking for all characters from s
+	loop how long? till pointer reaches end of string t
+
+	
+while(t_pointer < t.length()) {
+	if(t.charAt(t_pointer) == s.charAt(s_pointer)) {	//Check if first char of s is in t
+		s_pointer++;				//if yes increment s_pointer to next in s
+	if(s_pointer == s.length()) return true;		//keep incrementing till reach end of s string, if we reach end of string means all characters from s scanned and present in t
+}
+t_pointer++;					//if first char of s is not in t increment t and check for next char in t and compare with s
+}
+	
+	 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

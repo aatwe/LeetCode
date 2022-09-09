@@ -1,0 +1,72 @@
+What given?
+
+product has n versions: version1, version2, version3 ..... versionN
+
+What input? n //how many versions, 
+			[1,2,3,4,5,.....n]
+
+
+bool isBadVersion(version)  => true if version is bad
+
+
+What output? find first bad version
+
+Solution:
++++++++++++++++++++++++++++++++++++++++++++++
+public class Solution extends VersionControl{
+//what input? n = how many versions
+a) 
+   public int firstBadVersion(int n) {
+	a.1) define left and right to create subarrays
+	int left = 0;
+	int right =n;
+
+	a.2) check if left < right
+	while(left< right) {
+	  	a.1.0) Define midpoint		
+		int midpoint = (left + right - left)/2;
+	  	a.1.1) base case check if midpoint is bad version, if yes, check for versions before mid point.
+where to check? left subarray. How to create left subarray ? move right to mid point
+		if(isBadVersion(midpoint)){
+			right = midpoint;
+	) 
+		a.1.2)base case check if midpoint is bad version, f no check for versions after mid point.
+where to check? left subarray. How to create left subarray ? move left to mid point +1 , not mid point because it is not bad version
+		else  {
+			left = midpoint + 1;
+		}}
+		
+	a.3) Check if left = right i.e element i.e element found and if that element is BadVersion
+		
+	   if (left == right &&isBadVersion(left)) {	//is it possible left == right and is not badversion
+		return left;
+}
+	
+		return -1;
+}
+}
+++++++++++++++++++++++++++++++++++++++
+Final Code:
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int left = 0;
+        int right= n;
+        
+        while(left < right){
+                int midpoint = left + (right -left)/2;
+                if (isBadVersion(midpoint)) {
+                        right = midpoint;
+                } else {
+                        left = midpoint + 1;
+                }
+        }
+        
+        if(left == right && isBadVersion(left)) {
+                return left;
+        }
+                return -1;
+    }
+}

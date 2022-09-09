@@ -1,0 +1,124 @@
+Q) What is given?
+	string s
+	int k
+
+Q) What operations? 
+
+Do below max k times
+
+Pseudo Code:
+
+int i=0
+while(i < k)
+	1) Choose character of string s[i]
+	2) change s[i] -> ANY  upper case English char	
+	i++
+
+
+
+Test case:
+Input: s = "AABABBA" , k = 1 //do operation once
+
+Operation = 1)  Choose character of string s[i] , we choose 4th char  "A" //middle one
+	      2) change s[4] ="A" -->  "B" 
+
+Output: longest substring length = 4 by replacing with same letter B
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Pseudo-Psedo code
+
+My logic:
+1) get the value of k, get value of  string s
+2) depending on what value of  k and s	
+	find best place in  string s with repeating characters
+
+	How to find best place in string?
+	  what is the best place in string? -> where to the left AND/OR right there are subarrays of repeating characters
+					and between there is space for k
+
+		2.1) get count array
+		2.2) for ex AABABBA
+			count =   A  B C
+  				4  3  2
+
+
+Kevin logic:
+1) if k exists -> can add operation -> move
+2) if k does not exist -> but still next one is repeating -> can move
+3) if k not left -> track the length of current window -> move window
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Pseudo Code
+
+        #Create Sliding window of size 0 to size n
+	1) get length of string s
+	2) create count array to store count of characters in string s
+	3) create starting pointer window_start
+	4) create max_length = 0
+	5) track max_count till window_end
+	6) loop string s from window end 0 to <N 
+		6.1) first char encountered -> increment count of that character in count array char_counts	
+		
+		6.2) What after we increment count? 
+			check if this count of a character from char_counts array   against any previous max_count, update if >
+		        What after updating max_count? check length of sliding window
+					       check  how many different characters in sliding window till now 
+
+		6.3) How to check how many different char till now? total length of window - count of repeating char in window/max_count
+			window_end = window_start - max_count
+		Logic: while(no. of different char that exist in window > k) {//+1 for extra letter added // if 3 letters 0 , 1, 2 -> 2-0 = 2, but actual length = 3
+			6.3.1) decrement count of first char of window
+			6.3.2)  remove first char from front of window}	
+						
+		//breaks at equal to k //now window size is apt
+		6.4) What after window has adjusted? checki whichever max -> max_length or window_end - window_start + 1		
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	`	 
+public int characterReplacement(String s, int k) {
+	1) int N = s.length();
+	2) int[] char_count = new int[26]
+
+	3) int windows_start = 0;
+	4) int max_length = 0;
+	5) int max_count = 0
+	6) for(int window_end=  0; window_end<N; window_end++) {
+	 	6.1) char_counts[s.charAt(window_end) - 'A']++;
+		6.2) max_counts = Math.max(max_count, current_char_counts[s.charArt(window_end) - 'A']);		
+		
+		6.3) while(window_end - window_start -  max_count + 1)	
+			6.3.1) char_counts[s.charAt(window_start) - 'A']--;
+			6.3.2) window_start++;
+
+}
+		6.4) max_length = Math.max(max_length, window_end - window_start + 1);	  
+	}	
+	return  max_length;		
+}
+}
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Working code:
+class Solution {
+    public int characterReplacement(String s, int k) {
+
+     int N = s.length();
+	 int[] char_counts = new int[26];
+
+	 int windows_start = 0;
+	 int max_length = 0;
+	 int max_count = 0;
+	 for(int window_end =  0; window_end < N; window_end++) {
+	 	 char_counts[s.charAt(window_end) - 'A']++;
+         int current_char_count = char_counts[s.charAt(window_end) - 'A'];
+		 max_count = Math.max(max_count, current_char_count);		
+		
+		 while(window_end - windows_start -  max_count + 1 > k) {	
+			 char_counts[s.charAt(windows_start) - 'A']--;
+			 windows_start++;
+        }
+         
+	     max_length = Math.max(max_length, window_end-windows_start + 1);	  
+	}	
+	return  max_length;		
+    }
+}

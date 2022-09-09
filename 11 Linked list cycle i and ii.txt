@@ -1,0 +1,139 @@
+What is given?
+	head of LL
+
+
+What output?
+	return position of node where cycle begins
+
+		How to identify cycle in LL?	trick: use slow and fast pointers, when both of them meet
+1) Using Hashmap
+	if any node-> next element = one traversed in hashset then that element is begininig of cycle
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+boolean hasCycle(Node head) {
+
+   HashMap<Node,Integer> map = new HashMap<Node,Integer>();
+   if(head == null || head.next == null)
+      return false;
+   Node p = head;			//Point p to head of LL
+   while(p.next!=null) {		//loop condition p.next!=null
+      if (map.containsKey(p.next)) {	//if hashmap contains key for value 
+         return true;
+         return new int[] {map.get(p.next)}
+      } else {
+         map.put(p.next,p.data);
+      }
+      p = p.next;
+    }
+    return false;
+}
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2) Floyd Cycle detection.
+1 slow pointer 
+1 fast pointer
+	1) find where they meet
+	2) once meet, initialize 1 pointer to head,
+	3) move both with same speed, 1 step at a time
+	4) where they meet = starting node
+
+
+	Why works?
+	assume distance froms tarting to cycle node = m
+	total cycle distance = n
+	same distance from cycle node ahead opposite to cycle = m		//let that node be d
+	remaining distance of cycle = n- m
+
+
+df = m + c1n + k	//reach that node d	//takes 2 step
+ds = m + c2n + k	//reach that node d	//takes 1 step
+
+since double step
+	df = 2ds
+	m+c1n + k  = 2(m + c2n + k)
+	m+ c1n + k = 2m + 2c2n + 2k
+	m + k + (2c2 - c1)n
+	m + k = (c1 - 2c2)n
+	m + k = Cn
+	m + k = (C-1)n + n
+	m = (C - 1)n + n - k
+	distance treavelled by p1 = C1n + n -k
+	distance treavelled by p1 = C1n + d
+		 	
+
++++++++++++++++++++++++++
+Linked List i) //just detect if cycle
+
+public class Solution{
+	public boolean hasCycle(ListNode head) {
+		1) Check if head is null, if head null, no cycle found
+		if (head == null) return false;
+		
+		 
+		2) Create 2 pointers
+		ListNode slow = head;			//slow pointeriterates 1 at a time
+		ListNode fast = head.next;			//fast pointer iterates 2 at a time
+
+		3) loop condtiion 
+		while(slow!=fast) {
+			
+			if(fast == null || fast.next == null) {	//reached end, didnt come around, i.e no cycle
+				return false;
+			}
+	
+			slow = slow.next;
+			fast = fast.next.next;
+			}
+		return true; 
+		}
+}
+
+
+}
+++++++++++++++++++++++++++++++++++
+Linked List ii Solution	//detect which cycle node
+		//if slow == fast // cycle detected
+		//once cycle detected, reset slow to head	//keep fast where they met earlier
+		//wherever they meet -> cycle node
+	public  class Solution {
+		public ListNode detectCycle(ListNode head) {		//What input to method? head
+			1) Create slow and fast pointer	
+}			ListNode slow = head;, fast;
+		
+			2) loop condition
+			while(fast!= null &&  fast.next !=  null) {	//Check if cycle exists or not
+				slow = slow.next;			//move slow one at a time
+				fast = fast.next.next;		//move fast 2 at a time
+				if(slow == fast) {			//if cycle detected
+					slow = head;			//point slow to head
+					while(slow !=  fast) {		//loop both one at a time again until they meet again
+					   slow = slow.next;			
+					   fast = fast.next;
+			}					//When they meet again ->the loop node gets detected, return any
+				return slow;			
+		}
+	}
+
+				return null;			//if no cycle found //fast!= null &&  fast.next !=  null
+}
+		
+//Solution LInked list ii final code
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while(fast!= null && fast.next != null){
+                slow = slow.next;
+                fast = fast.next.next;
+                if(slow == fast){
+                        slow = head;
+                        while(slow != fast) {
+                            slow = slow.next;
+                            fast = fast.next;
+                        }
+                    return slow;
+                }
+        }
+            return null;
+    }
+
+			

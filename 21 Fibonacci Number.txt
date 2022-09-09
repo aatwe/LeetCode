@@ -1,0 +1,88 @@
+What is fibonacci number? sequence in which  : every number = sum of previous 2 elements, 
+			starting 2 = 0 , 1
+	F(n) = 0 , 1 , 1 , 2, 3, 5, 8 , 13....  n		//Array
+	F(0) = 0, F(1) = 1, ....	,F(n-2), F(n-1), F(n)	
+
+What input? n	//how many elements of sequence
+Output = F(n)	//nth element of sequence
++++++++++++++++++++++++++++++++++++
+Pseudo Code Recursively:
+	
+	//Break down to nearest subproblem. How to calculatefib(n) which is value in sequence at n?
+					Ans : sum of value at n-2 and n-1
+	1) Create function fib(n) {
+		f(n) = f(n-2) + f(n-1);	
+
+	//Base Case:
+	if n = 1 : int f(1) = 1;
+	if n = 0	int f(0) = 0;
+		}
+Pseudo code Iteratively:
+	1) 
+
+++++++++++++++++++++++++++++++++++++
+Code:
+Recursively
+class Solution {
+	public int fib(int N) {
+		if(N== 0) return 0;
+		if(N==1) return 1;
+		return fin(N-1) + fib(N-2);
+}
+}
+
+Working code:
+class Solution { 
+	public int fib(int N) {
+		if(N== 0) return 0;
+		if(N==1) return 1;
+		return fib(N-1) + fib(N-2);
+    }
+   }
+//What TC for recursive? O(2N) 	, breaks down every into 2
+//What SC?	Stack space	//since recursion always involves stack space
+
+Code 
+Iteratively
+//Start from farthest solution you actually know
+class Solution {
+	public int fib(int N) {
+	//farthest solution we know	
+		if (N == 0) return 0;
+		if(N ==1) return 1;
+
+	//write a function to sum up first 2, and swap first with second, second with third(sum) //execute this function until we reach from N =1 to N = N
+		int a = 0;
+		int b = 0;
+	
+		while(N >1) {
+		  int sum = a + b;
+		  a = b; 
+		  b = sum;
+		  N --;	
+}
+		return sum;		
+}
+}
+
+Working Code: Iteratively:
+class Solution { 
+    public int fib(int N) {
+        if (N == 0) return 0;
+        if (N == 1) return 1;
+        
+        int a = 0;
+        int b = 1;
+        int sum = a + b;
+        while(N >1) {
+            sum = a + b;
+            a = b;
+            b = sum;
+            N--;    
+        }
+        return sum;
+    }
+}
+
+//Why iterative > recursive here? uses less space. Uses variables
+

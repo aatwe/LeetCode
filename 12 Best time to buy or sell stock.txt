@@ -1,0 +1,129 @@
+What given? array of prices : prices[]
+	what elements in array? prices[i] =? // price of a stock on ith day	
+	can only go forward in array	
+
+What input?
+for ex
+	prices = [7,1,5,3,6,4]
+	Output
+		
+What output? 
+max profit
+	choose i 	// prices[i] = buy price of stock
+	choose future j // price[j] = sell price of stock
+	
+profit = price [j] - price[i]	//maximum
+
+
+How to calculate max difference
+	How to find max difference elements in array.
+		1) O(n^2) solution
+		//pick an elemnt, take difference with every other element
+			loop for all elements
+			  for (i = 0; i < arr_size; i++) 
+    				  {
+       			     for (j = i + 1; j < arr_size; j++) 
+       			     {
+            			    if (arr[j] - arr[i] > max_diff)
+               			     max_diff = arr[j] - arr[i];
+       			     }	
+		2) Tricky
+	2.a)
+		//General logic:
+			find and track earliest min_element
+			calculate diff with all next elements
+				if the difference keeps increasing -> keep updating value
+				if min_element decreases/ smaller min_ element found ahead, update value
+
+		a)  find min element yet found, b) find max difference found till now
+		
+		a) Create a maxDiff function()
+		int maxDiff(int arr[], int arr_size)	//what input? arr[] and arr_size
+		{
+			a.1) //define max_diff initially = second element - first element
+			int max_diff = arr[1] - arr[0];
+			a.2) //define min_element initially as first element	
+			int min_element = arr[0];
+			a.3) iterate over array from second element	
+			for(int i=1; i< arr_size; i++)							//TC O(n)
+			{
+				a.3.1) if current element - min_element found till now > max_diff found till now
+				if(arr[i] - min_element > max_diff)
+					//we found a ebtter max_diff, assign new value
+					max_diff = arr[i] - min_element;
+				a.3.2) if current element < min_element found till now.
+				if(arr[i] < min_element)
+					min_element = arr[i]
+			}
+			return max_diff;
+}
+		2.b)
+			Track max element from right	
+
+			static int maxDiff(int arr[], int n)
+			{
+			    // Initialize Result
+			    int maxDiff = -1; 
+      
+			    // Initialize max element from right side
+			    int maxRight = arr[n-1]; 
+		  
+			    for (int i = n-2; i >= 0; i--)
+			    {
+				        if (arr[i] > maxRight)
+				            maxRight = arr[i];
+				      else
+				            {
+           				            int diff = maxRight - arr[i];
+           				            if (diff > maxDiff)
+           					 	{
+           						     maxDiff = diff;
+           						 }
+      					}
+   				}
+  				         return maxDiff;
+				}
+
+
+
+Doubt
+		find max element forward		//bad idea : 13 12 2 5 7 8 10	//here max element 13 is useless
+		find min element behind max element
+
+
+
+Stock problem:
+1) Create class Solution
+1	class  Solutiton {
+	  	1.1) Create method maxProfit()	//What input?what array passed, prices
+		public int maxProfit(int[] prices) {
+			1.1.1) Assume min_val and max_profit
+			int min_val = Integer.MAX_VALUE;
+			int max_profit = 0;
+
+			1.1.2) Loop//why loop? to calcualte max_profit , how to calculate max_profit? assume a min_val(assume as max as possible) , assume a max diff(assume as small as possible 0), if smaller min val found update, if larger max_val found update
+			for(int i=0; i< prices.length; i++) {
+				min_val = prices[i];
+			}  else if (prices[i] - min_val > max_profit) {
+				max_profit - prices[i] - min_val;
+			}
+			}			
+			}
+}
+++++++++++++++++++++++++++++++++++++++++
+Final code:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int min_val = Integer.MAX_VALUE;
+        int max_profit = 0;
+        
+        for(int i=0; i< prices.length; i++) {
+                if(prices[i] < min_val) {
+                    min_val = prices[i];
+                 } else if (prices[i] - min_val > max_profit) {
+            max_profit = prices[i] - min_val;
+        } 
+    }  
+            return max_profit;
+    }
+}

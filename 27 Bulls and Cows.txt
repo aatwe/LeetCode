@@ -1,0 +1,146 @@
+friend guesses n digit no.  int secret
+after guess
+	tell friend					//duplicate allowed
+	int bulls = digits in correct position in guess		for ex secret = 45543 guess = 45243  bulls = 4
+	int cows = digits present but at wrong location		for ex secret = 43342 guess = 44525  cows = 2
+
+ex 1123  ---   0111	//note _ = bull      | = cows 
+	        _ |
+	        OR
+	        _   | 
+
+Input: secret= " " , guess = " "
+
+Output: xAyB	
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Objective:
+	1) find how many positions with correctly placed characters = bulls 
+		How to find positions with correctly placed characters?
+			int bulls = 0;
+			1) loop secret[i]  and guess[i]
+				if secret[i] = guess[i] -> bulls++
+								
+
+
+	2) find how many positions with incorrectly placed characters = Cows
+		How do you find positions with existing but incorrectly placed character?
+			//dont want to check for correctly placed elements/bulls
+			1)   put all elements from secret except bulls index into hashmap
+			2)  loop all elements of guess except bulls index
+				if hashmap.contains(guess[i]) -> cows++
+	
+Pseudo code
+1) track bulls and cows , init to 0
+2) create 2 arrays sec[] and gue[] to track count of characters in secrets and guess respectively
+			///sec[] -> count of characters in string secret
+			     gue[] -> count of characters in string guess
+	
+3) loop over secrets array from to secrets.length
+	3.1) get first char from string secrets
+	3.2) get first char from string guess
+	3.3) check if s == g // bull found
+		bulls++;
+	
+	3.4) else in case of unmatching values
+
+		why do we have 2 arrays? to track counts
+		//different values mean 3 possibilities
+				a) either char in guess might have been seen earlier in secrets
+				b) or char in guess can be seen ahead in secrets
+				c) or char in string  is not present in string secrets
+		//lets solve for these 3 possibilities	
+		3.4.1) increment count of s sec[] array	//since s is definitely in string secrets
+		3.4.2) increment count of g in gue[] array  // track g for future
+	3.5) loop over sec[] counts array with current element i
+		increment cows count with whatever minimum among (count of current element in sec[], count of current element i in gue[i]) )
+			why minimum?	
+
+Code:
+1) int bulls = 0, cows = 0;
+2) int[] numbers =  new int[10]					
+3) for(int i=0; i< secret.length(); i++){
+	3.1) int s = secret.charAt(i) - '0';
+	3.2) int g = guess.charAt(i) - '0'	
+	3.3) if (s==g) {
+		bulls++;
+	3.4) } else {
+	sec[guess.charAt(i) - '0']++;
+	gue[guess.charAt(i) - '0']++;
+	}
+  }
+	3,5)for(int i = 0; i< sec.length; i++) {
+		cows += Math.min(sec[i], gue[i]);
+}	
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Using Hashmap
+//find how many positions with correctly placed characters = bulls 
+//find how many positions with correctly placed characters = bulls 
+1) track bulls and cows
+2)create 2 hashmaps named sec and gue to track count
+3) loop over entire secrets array
+	if (secret.charAt(i) == guess.CharAt(i)) {
+		bulls ++;
+} 	 		
+4) else case		//If values are not matching
+				a) either char in guess might have been seen earlier in secrets
+				b) or char in guess can be seen ahead in secrets
+				c) or char in string  is not present in string secrets
+		4.1) get the char a from secrets[]
+		4.2) get the char b from guess[]
+		
+		4.3) check hashmap sec contains a, 
+		       if hashmap sec does not contain a ->
+			input value of a at position1 in sec
+		 4.4)else { //cases if hashmap contains
+			put at that same position and increment count}
+		 4.5)check hashmap guecontains b, 
+		       if hashmap gue does not contain b ->
+			input value of b at position b in gue and increment count
+		4.6)
+
+5) loop over hashmap gue,  get all keys of hashmap gue using .keySet() method s
+		5.1) check if current key of hashmap gue is present in hashmap sec.
+		What if same letter found in sec[]? letter guessed in String guess is present in String secrets, just not at correct place --> increment count of cows
+			by what? whatever minimum count of characters we found that are not at correct place but exist
+		6) return final
+ 		
+Code using hashmap:
+public class Solution {
+	public String getHint(String secret, String guess) {
+
+	1) int bulls = 0;
+	    int cows = 0;
+	2) HashMap<Character, Integer> sec = new HashMap<Character, Integer>();
+	    HashMap<Character, Integer> gue = new HashMap<Character, Integer>();
+	3) if (secret.charAt(i) == guess.CharAt(i)) {
+		bulls ++;
+		}
+	4) else {
+		4.1) char a = secret.charAt(i);
+		4.2) char b = guess.charAt(i);
+	}
+		4.3) if(!sec.containsKey(a)) {
+			sec.put(a,1);			
+		}
+		4.4) else {
+			sec.put(a, sec.get(a) + 1);
+		}
+		4.5) if(!gue.contains.Key(b)) {
+			gue.put(b,1)
+}
+		4.6)else {
+			gue.put(a, sec.get(b) + 1);
+		}		
+	}
+}	
+	5) for(Character c : gue.keySet()) {
+		5.1) if(sec.containsKey(c)) {
+		   cows += Math.min(sec.get(c), gue.get(c));
+	}
+}
+
+	6) return bulls + "A" + cows + "B";	
+
+}
+}			

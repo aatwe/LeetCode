@@ -1,0 +1,93 @@
+Q1) What given?
+	int cost[]
+		What inside array? cost of each step
+			for ex 	cost [1] = cost of 1st step on staircase
+			          	cost[2] = cost of 2nd step on staircase
+				cost[i] = cost of ith step
+	cant climb unless pay cost
+
+	once pay cost -> climb 1 or climb 2 options
+
+	start from which index step? 0 or 1
+
+
+What input? cost = [10, 15, 20]
+What output? minimum cost to reach top index cost.size
+		start at 10 , pay cost of 15 -> jump 2 steps
+++++++++++++++++++++++++++++++++++++++++++++++++++
+pseudo code
+m2)
+we figured out how many ways to reach n node
+calculate cost for all ways and track
+find minimum
+
+m1)
+1) start from 0th 
+2) find min of 2 costs
+for(int i=2; i< cost.ength; i++){
+	cost[i] = Math.min(cost[i-2],cost[i-1])
+}
+
+
+for ex cost= [1, 100, 1, 1, 1, 100...]
+	start at index 2 -> check min of prev 2 costs
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
+Code1	//Greedy approach //working
+public int minCostClimbingStairs(int[] cost) {
+	for(int i=2; o< cost.lengthl i++) {
+	  cost[i] += Math.min(cost[i-1], cost[i-2]);
+		}	        
+	return Math.min(cost[cost.length-1], cost[cost.length -2]); 	
+	} 
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++
+DP Way
+Objective: find what min cost of reaching last element
+1) what cost of reaching 1st step	0
+2) what cost of reaching 2nd steps	0
+
+
+	what cost of reaching 3rd step? cost of 3rd step + Min Cost of reaching 3rd step
+							//min(cost of reaching step1 OR cost of reaching step2)	//whichever is less since we have 2 options
+ cost of 3rd step + min(cost of reaching step 1 OR cost of reaching step 2)
+
+3;) loop from back of array
+	calculate for each 
+==================================================
+Code:
+
+	for(int i= cost.length-1; i>0; i--){
+		int current_step = cost[i] + Math.min(step1, step2)
+}
+
+class Solution{
+public int minCostClimbingStairs(int[] cost) {
+	int step1=  0;
+	int step2 = 0;
+	for(int i=cost.length-1; i>0; i--) {
+		int current_step = cost[i] + Math.min(step1, step2);
+		step1 = step2
+		step2 = current_step;
+		} 
+	
+	return Math.min(step1, step2);
+	}
+}
+}
+
+Input: [10,15,20]
+
+step1	       0
+step2	       0	//min 0
+current_step   20	//20 + 0
+step1	       0
+step2	       20	//min 0
+current_step   15	//15 + 0
+step1	       20
+step2	       15
+current_step   25	//10 + 15
+step1	       15
+step2	       25
+
+Output: 15

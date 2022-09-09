@@ -1,0 +1,134 @@
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+ 
+What given? 
+	int array nums[]
+	int target
+
+What input?
+	a) nums[]		// 2 <=nums.length <= 10^4
+	a) nums[i]	// -10^9 <nums[i] < 10^9 	//not repeatable
+	b) int target	// -10^9 <= target <= 10^9
+What output?
+	x , y in nums[]
+	nums[x] + nums[y] = target 
+	//what if x,y do not exist? there is one solution
+	//can x = y? no
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Solution:
+
+psuedocode:
+	1) Create array
+	2) take input from user , store in array
+	3) find combinations of 2 from n elements which satisfy x + y = target
+		1) brute force
+			all combinations of 2 elements from sizeof[array] elements = nC2
+			TC  = O(n^2)
+		2) check for only target - starting no.	
+
+Using efficient method		 
+ Use hashmap
+		0) Create Array
+		1)Create empty hash map -> map index of each value
+		2)Initialize
+		3) visit first element -> add element and index to hashmap  -> calculate what value to search next in array			
+		4) search value in array ->
+			if found return hashmap index and found index
+		5) visit second element ->... 
+			..
+TC : Adding to hashmap ? O(1)
+       peeking hashmap ?O (1)
+       finding 2 elements? O(n)
+     
+SC : Hashmap : O(n)	//if last , worst case add all elements to hashmap		
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code: in Python
+ a) Create class Solution
+	class Solution
+	
+	a.1) 	//Create twoSum() method //What input? list of integer nums, variable int target , 
+		def twoSum(self, nums: List[int], target: int) -> List[int]:
+	   a.1.1) 		//Create hashmap prevMap //contains every previous element encountered
+		      prevMap = {} # val : index
+	   a1.2)		//loop over values in array nums[]
+			//create for loop, loop over nums[]
+		        for i, n in enumerate(nums):				//enumerate gives index and value auto
+			a.1.2.1)	//Calculate difference for first value
+				diff = target - n
+			a.1.2.2)    //Check if diff exists in hashmap
+				if diff in prevMap
+				//if exists return index of hashmap element with value diff  and i from nums
+				     return [prevMap[diff], i]
+			a.1.2.3)   //WHat if diff valued element not exist in hashmap? keep looking solution exists
+					//update hashmap with n , i from nums[]
+				   prevMap[n] = i
+			a.1.2.4) 	return	//
+	
+				      
+Note::how 2,7 and 7,2 both mean same
+only have to calculate once
+
+
+Final code : Python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+            prevMap = {} #  index : value
+            
+            for i, v in enumerate(nums):
+                diff = target - v
+                if diff in prevMap:
+                        return[prevMap[diff],i]
+                prevMap[v] = i
+            return 0	
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Java
+1) Using 2 for loops
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+	for(int i=0 ; i<nums.length; i++){
+		for(int j = i+1; j< nums.length; j++){
+		   int compliment = target - nums[i];
+
+		if(nums[j] ==compliment){
+		  return new int[] {i, j}; 
+        }
+	}
+}
+	
+	throw new IllegalArgumentException("no match found");
+    }
+}	
+
+Why tc imp? is this code sufficient for million of data
+	they need a fastest solution to scale
+	This loop scales O(n^2) 	//not good	 
+Target: O(n)			
+
+2) Using Hashmap	//Why use hashmap? O(1) look up
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+
+a) Create a hashmap
+	Map <Integer, Integer> num_map = new Hashmap<>();
+
+b) loop over first array
+	for(int i=0; i< nums.length; i++){
+	b.1) calculate compliment value for element
+		int compliment = target - nums[i];
+
+	b.2) Check if hashmap contains compliment value
+		if(num_map.containsKey(complement)){
+		b.2.1) if contains, return index in hashmap and index in array
+		   return new int[]{num_map.get(complement), i};
+}
+	b.3)	if hashmap does not contain compliment value
+			add to hashmap
+		nummap.put(nums[i], i);
+		}	
+	throw new IllegalArgumentException("no match found");
+	}
+}

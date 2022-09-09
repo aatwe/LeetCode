@@ -1,0 +1,92 @@
+What given? 2 nodes in BST : p ,  q
+What to find? lowest common ancestor node of 2 nodes
+	What is Lowest common ancestor node T?  node T  should have both p and q as descendant
+				T
+			          / 	        \
+			    p	          q	
+Note: consider p is descendant of p
+
+
+Ex LCD of p and q is : p
+				p			
+			          /
+			     q	
+			          \
+				r
+		
+What input? root = [...]
+	     p
+	     q	
+Objective: Find LCD 		
+Output: type TreeNode
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Hint = BST, in a subtree, all left subtree elements always <  all right subtree elements
+	
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Algorithm
+iterative:
+1)  check p,q are in left subtree or right subtree
+   a) 
+	both in same subtree			//What is condition? if p < q , traversing up also p< q ,
+						   what condition when above the common node? p < q
+	1) what we know  p and q	-> check where p and q are, if p <q  or p > q
+	2) if p<q : havent reached common node
+	3) if p> q condition breaks ->we passed lowest ancestor descendant
+   b)  
+	both in different subtree
+		return root
+
+
+recursive thinking: 	//Assume function already works for any subproblem
+What function() should do? find lowest common ancestor of p and q .
+What subproblems?	//find subproblem closest to the real problem	//if problem to solve for n, subproblem to solve for n-1
+	1) check if p and q are in left subtree of root. 		How? root > p & root > q	
+	2) check if p and q are in right subtree of root	 	How? root < p & root < q
+	3) check if p and q are in different subtrees of root 	How? root > p & root < q   OR  root < p & root > q
+What base case?Easiest solution that we know from overview?	//otherwise function will keep running forever
+
+
+function()
+a.1) if p and q in same left subtree -> go left  -> Recursive function () check from a.1)
+a.2) if p and q in same right subtree -> go right -> recursive function() check from a.1)
+a.3) if p and q in different subtree-> return root					//Base case
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Pseudo-Code
+//my iterative way
+1) given p and q, , if not given find position/index of p and q
+2) do the recursive check for p and q : 
+	what recursive check
+		1) check if both are in same subtree or different subtree by comparing values to root , if in different -> return root		//Base case	
+		2) if in same subtree
+			2.1) travel to both index
+			2.2) check if p< q
+			
+
+3) move pointer one step up	
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Pseudo code
+//Nick's recursive way
+
+	a) call LCA() for root, p, q
+	   a.1) check if in same left subtree
+		recursive call LCA() for root.left, p , q
+	  a.2)  check if in same rightsubtree
+		recursive call LCA() for root.right, p , q
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class Solution {
+	a) public TreeNode lowestCommonAncestor(TreeNode root, Treenode p, Treenode q) {}
+		a.1) if (p.val < root.val && q.val< root.val)	
+			return lowestCommonAncestor(root.left, p , q) 		
+}
+		a.2) if(p.avl > root.val && q.val > root.val) {
+			return lowestCommonAncestor(root.right,p , q)
+		
+		a.3) return root				//Base case
+}
+
+Time Complexity: O(h)	//h = height
+Space Complexity : O(h)	//ignoring recursive stack space
+++++++++++++++++++++++++++++++++++++++++++++++++++++

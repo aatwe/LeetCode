@@ -1,0 +1,59 @@
+What given?
+	string s
+	string t
+
+What is isomorphic?
+	if you can replace all x characters in string s with y
+		and all	   a characters in string s with b
+				you get string t
+
+Similarly if
+	if you can replace all y characters in string t with x
+		and all	   b characters in string t with a
+				you get string s
+
+string s has 1-1 mapping with string t
+
+	abc 	xyt	//not isomorphic
+	aaxy	vvaz	//not isomorphic
+++++++++++++++++++++++++++++++++++++++++
+Solution:	
+1) Figure out how to map 2 characters
+//Using 2 array will give time complexity
+//Use hashmap	//check both way 1-1 mappiing exist or not(value-key and key-value)
+
+
+class solution {
+	a) Create isIsomorphic method //returns true/false
+	public static boolean isIsomorphic(String s, String t) {
+	
+	b) Create hashmap	
+	Hashmap<Character,Character> map = new Hashmap<>();
+
+	b) first check is length should be equal otherwise no point
+	if(s.length() != t.length()) return false;
+	
+	c) loop over first string	
+	for(int i=0; i<s.length(); i++ )	//note have to loop over only 1, s or t, not on both
+	{
+		c.1) how to check if a mapped to x and x mapped to a only?check in hashmap. a and x stored in hashmap
+	    		//get current character p of string s  and current character q from string t
+	    char p1 = s.charAt(i);
+	    char p2 = t.charAt(i);
+			//What after getting char from both strings, check if they are mapped to each other ONLY in hashmap
+				
+	    if(map.containsKey(p1))	//Check if key exist in map
+		{			//if key exist check if key p1 is mapped to p2 , if not return false
+			f(masp.get(p1)!=p2) return false;			
+}
+	   if(map.containsValue(p2))   //Check if value exist in map
+	{				//if value exist check if value p2 is mapped to key p1 , if not return false
+			if(map.get(p2!=p1)) return false;
+}
+	else{	//if map does not contain?add key - value pair to hashmap since first traversal for that character
+			map.put	(p1,p2);					
+		}
+	return true;
+}				
+ }
+} 

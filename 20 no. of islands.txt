@@ -1,0 +1,127 @@
+Q1) What given?
+2d grid 	mxn	 contains 1 and 0
+
+What is 1? land
+what is 0? water
+
+what is island? water in 4 directions + 1s connected horizoontally/vertically	
+how can land be connected? 4 directions	//connect 1 to another 1 in 4 directions
+
+What at edges of 2D array? water
+1 0 1 1 0 0...m  rows
+1 1 1 0 0 1
+1 0 1 1 1 0
+1 1 0 0 0 1
+.
+.
+.
+n columns
+
+base case:	Check if one 1 has 0 in 4 directions
+		
+		if we find multiple 1s connected, recursive check for each 1
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Test case
+1 1 1 1 0 
+1 1 0 1 0 
+1 1 0 0 0 
+0 0 0 0 0 
+
+Output: 1 island
+
+Test case
+1 1 0 0 0 	
+1 1 0 0 0 
+0 0 1 0 0 
+0 0 0 1 1 
+
+Output: 1 island
+---------------------
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Objective: Use BFS over 
+a) create method numIslands.what input params?
+	a.1) initialize count
+	a.2) loop over 2darray grid[][]
+			   //count+=1			//callBFS(grid,i,j)
+		if see1 ->  increment count by 1 -> find all connected 1s to found 1 -
+
+	a.3) return count
+		
+b)  create method void callBFS()	//how to find connected 1s to a grid element
+			What input param? grid[][], i,j position of found element in grid
+	 
+	b.1) what checks before finding connected 1s/ doing bfs()?check if i and j in bounds	//note j will be in i's perspective
+										//we already checked1, but to avoid mistake add another 1 check
+		//if any checks violate 
+		return;
+ 
+	b.2) if checks all ok find next connected 1s to the grid element. How? 
+		destroy the current node //make as 0 so we dont visit it again
+		callBFS() for 4 directions
+	
+	
+
+`						
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code:
+class Solution {
+a) publicint numIslands(char[][]grid) {
+		a.1) int count
+		a.2) for(int i=0; i< grid.length; i++) {
+			for(int j=0; j<grid[i].length; j++) 
+			{
+			if(grid[i[j] == '1') {
+			  count+=1;
+ 			  callBFS(grid, i , j);
+			}}}
+		a.3) return count;
+}
+
+b) public 	void callBFS(char[][] grid, int i, int j) {
+	b.1) if(i<0 || i> grid.length || j<0 || j> grid[i].length; grid[i][j] == '0')
+		return;
+		grid[i][j] = '0';
+		callBFS(grid, i+1, j);	 //up
+		callBFS(grid, i-1 , j); //down  
+		callBFS(grid, i, j-1);  //left
+		callBFS(grid, i ,j+1); //right 
+}
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Final working code
+
+class Solution {
+    public int numIslands(char[][] grid) {
+        
+        
+		     int count = 0;
+		     for(int i=0; i<grid.length; i++) {
+			     for(int j=0; j<grid[i].length; j++) { 
+                    if(grid[i][j] == '1') {
+			            count +=1;
+ 			            callBFS(grid, i, j);
+			        }
+                }
+            }
+		    return count;
+        }
+
+     public void callBFS(char[][] grid, int i, int j) {
+	        if(i < 0 || i>= grid.length || j<0 || j>= grid[i].length || grid[i][j] == '0') {
+	         return;
+     }
+		    grid[i][j] = '0';
+		    callBFS(grid, i+1, j);	 //up
+		    callBFS(grid, i-1 , j); //down  
+		    callBFS(grid, i, j-1);  //left
+		    callBFS(grid, i ,j+1); //right 
+}
+}

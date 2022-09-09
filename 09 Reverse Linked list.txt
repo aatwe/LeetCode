@@ -1,0 +1,81 @@
+What  input?
+	1 -> 2 -> 3 -> 4 -> 5 -> NULL
+	5 -> 4 -> 3 -> 2 - > 1 -> NULL
+
+
+How to reverse a linked list?
+
+Solution? 
+//front of head is cut and gets patched behind
+3 pointers: head pointer, prev pointer before head and next pointer after head
+a) where is head pointing ` head of LL
+b) where is prev pointing?
+c) where is next pointing?	
+
+
+How to reverse?	
+-------------------------------------------------------	
+a) State 1 
+
+a.0) //ListNode next = head.next;
+prev	 head	next
+null    	   1   ->        2    ->    3    ->    4    ->5
+
+a.1)  //head.next -> prev
+prev	head     next
+null    <-	   1           2    ->    3    ->    4    ->5
+
+a.2) //prev = head;
+	prev     next
+null    <-	  1           2    ->    3    ->    4    ->5
+
+a.3) //head = next
+	prev     head
+null    <-	  1           2    ->    3    ->    4    ->5
+
+------------------------------------------------
+b) State 2
+	prev     head
+null    <-	  1           2    ->    3    ->    4    ->5
+
+a.0) //ListNode next = head.next;
+	prev    	head       next
+null    <-	   1              2    ->    3    ->    4    ->5
+
+a.1)  //head.next -> prev
+	prev	head       next
+null    <-	   1    <-     2    	 3    ->    4    ->5
+
+a.2) //prev = head;
+                	prev        next	
+null    <-	  1     <-      2            3    ->    4    ->5
+
+a.3) //head = next
+		prev        head
+null    <-	  1     <-      2            3    ->    4    ->5
+------------------------------------------------------
+1) head.next -> prev
+2) prev = head;
+3) head = next
+
+
+0) Create class Solution
+
+0.1) Create method reverseList(ListNode head)
+		//What input? head node
+
+Create a node  of type ListNode , call it prev, where pointing to ? null
+1) ListNode prev = null;
+
+2) traverse the input LL, What condition to traverse the linked list
+ while head node to input linked list is not equal to null
+	while(head!= null)
+	2.a)  Create a new node next , point it to next element in input linked list
+
+		ListNode next = head.next;
+		head.next = prev;        	//points back to null'
+		prev = head		//earlier head becomes prev node	
+		head = next;		//next becomes head node	
+		}
+	2.b) return prev	//in the end prev will be at head of reversed list
+

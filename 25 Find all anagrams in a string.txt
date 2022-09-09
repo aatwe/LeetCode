@@ -1,0 +1,241 @@
+What given?
+	input: 2 strings s and p
+	return  starting indexes , of what?
+		anagrams of p in s
+
+		What is anagram? abc , cba , bac etc	//permutation
+	         0  	    6
+	if s = acbfjdcbaijdo	p= abc
+		p's anagram in s is at starting indexes 	0 and 6
+
+Objective: find starting indexes of anagrams
+
+
+1) Find how many anagrams of p in s
+
+
+
+++++++++++++++++++++++++++++++++++++++++++
+Test case:
+
+Input:
+s : "cbaebabacd" p : "abc"
+
+Output:
+[0,6]
+
+++++++++++++++++++++++++++++++++++++++++++
+Pseudo code:
+a) store output array in arrayList
+b) check if s is not empty, if s empty -> return empty list //p not found in s
+//Count in string strategy
+c) Store count of each character?
+	create a int array char_count[26]
+d) covert p to char array
+    count frequence of 'a' subtracting ASCII value of a from each element in p	
+e) initialize left pointer
+f) initialize right pointer
+g) initialize count size of sliding window
+h)How to know if we found a anagram?
+	h.1) loop the s string
+	h.2) if found anagram -> track index -> store in  result ArrayList -> keep looking
+		h.2.1) right is the current char
+			if we look up this current_char , if we found one (>1) --> c  is part of anagram --> decrement c from frequency table --> increment right boundary  ---> decrement count	
+
+i) Once count = 0 -> whole anagram found -> add left in result arraylists
+
+j)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Code:
+
+a) List<Integer>result= new ArrayList();
+b) if (s.length() == 0 || s = null) return  result; 
+c) int[] char_counts = new int[26];
+d) for(char c: p.toCharArray()) {
+	char_count[c - 'a']++;		
+	}
+	
+e) int left = 0;
+f) int right = 0;
+g) int count = p.length();
+h) while(right < s.length()) {
+	if(char_counts[s.charAt(right++) - 'a']-- >= 1) count--;
+
+	if(count ==0) result.add(left); 
+
+	if(right - left == p.length() &&char_counts[s.charAt(left++)]++ >= 0) count ++;
+}	
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Input:
+s : "cbaebabacd" p : "abc"
+
+Output:
+[0,6]
+
+Readable code:
+1.a) Create findAnagrams method of type ArrayList. What input params?String s and String p
+a) find s string's length store in int sn
+b) find p string's length store in int pn	//note check in s if anagram of p exists
+c) How to display output? Create a new ArrayList res of Integer
+d) if length of any string is < 0 -> return empty ArrayList res of Integers
+e) create new array pArr of size 26, WILL STORE COUNT, each index assigned to each character  //a =0
+f) loop over p array till end
+	get each character from string p using charAt
+	//position 0 is for a  // position 1 is for b //position 2 is for c
+	get count of each character of charArray p -> store in count array pArr
+		how to get count of each character from p? find	value of that character, increment that value index in count array pArr
+g) loop over s array till (size of s - size of p)
+	g.1) get each character c of string s using charAt
+	g.2) check if current character = a if yes continue	
+	g.3) call isAnagram method from current index i to i+pn-1(window sized pn-1)-> 
+				if true -> add index i vto output result  res
+
+h) return res ArrayList	
+
+2.i) Create isAnagram() method. What input params? String s, start from where and end to where pointer , count array of p : pArr
+	//What is purpose of this method? check if anagram found at index i in array s
+	How to check if anagram found? what we have till now? we know count of each character in p array. In anagram for all characters of array p count must satisfy
+								for ex if p = abcaa   we have pArr = 3, 1, 1, 0 ,0,0,0,0...... 26 characters
+	Hoow to check if anagram found in string s at index i? 
+			1) consider only elements >0 from p
+			2) create separate count array for s -> sArr
+			2) if value of char at index i in array s = any of the value from array pArr -> increment count for that character insArr by 1
+			3) compare sArr and pArr
+	i.1) Create new count array for s ->sArr
+	i.2) loop over characters in s Array from whatever start to whatever end provided.
+		i.2.1) get character from string s
+		i.2.2) check value of  character c in countarray pArr. If count = 0 , this character is not from anagram ->skip/return false
+		i.2.3) if not -> increment value of this character c in sArr 
+		i.2.4) compare sArr[index of character c(c - 'a')] vs pArr index of character c(c - 'a')
+			if value in sArr > pArr -> return false
+			
+			else return true;
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class Solution {
+2.a)   public List<Integer> findAnagrams(String s, String p) {
+a)        int sn = s.length();
+b)      int pn = p.length();
+c)         List<Integer> res = new ArrayList<>();
+d)         if (sn<=0 || pn<=0) return res;
+        
+e)         int[] pArr = new int[26];	
+f)         for (int i = 0; i < pn; i ++)
+        {
+    f.1)        char c = p.charAt(i);
+	 int position = c - 'a';
+	 pArr [position] = pArr [position] + 1;
+        }
+        
+g)       for (int i = 0; i <= sn-pn; i ++)
+        {
+       g.1)     char c = s.charAt(i);
+	  int position2 = c - 'a';
+       g.2)	if( pArr[position2] == 0) continue
+     
+       g.3)     if (isAnagram(s, i, i+pn-1, pArr))
+            {
+                res.add(i);
+            }
+        }
+        
+h)   return res;
+       }
+    
+2.i)     private boolean isAnagram(String s, int start, int end, int[] pArr)
+    {
+   i.1)     int[] sArr = new int[26];
+   i.2)     for (int i = start; i <= end; i ++)
+        {
+         i.2.1)   char c = s.charAt(i);
+         i.2.2)   if (pArr[(int)(c-'a')]==0) return false;
+         i.2.3)   sArr[(int)(c-'a')] ++;
+         i.2.4)   if (pArr[(int)(c-'a')]<sArr[(int)(c-'a')]) return false;
+        }       
+          	return true;
+    	}
+}
+
+Working Code:
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int sn = s.length();
+        int pn = p.length();
+        List<Integer> res = new ArrayList<>();
+        if (sn<=0 || pn<=0) return res;
+        
+        int[] pArr = new int[26];
+        for (int i = 0; i < pn; i ++)
+        {
+            char c = p.charAt(i);
+            pArr[(int)(c-'a')] ++;
+        }
+        
+        for (int i = 0; i <= sn-pn; i ++)
+        {
+            char c = s.charAt(i);
+            if (pArr[(int)(c-'a')]==0) continue;
+            if (isAnagram(s, i, i+pn-1, pArr))
+            {
+                res.add(i);
+            }
+        }
+        
+        return res;
+    }
+    
+    private boolean isAnagram(String s, int start, int end, int[] pArr)
+    {
+        int[] sArr = new int[26];
+        for (int i = start; i <= end; i ++)
+        {
+            char c = s.charAt(i);
+            if (pArr[(int)(c-'a')]==0) return false;
+            sArr[(int)(c-'a')] ++;
+            if (pArr[(int)(c-'a')]<sArr[(int)(c-'a')]) return false;
+        }
+        
+        return true;
+    }
+}
+
+What TC? O(length(s)* O(length(p))
+What SC? O(1)
+
++++++++++++++++++++++++++++++++++++++++++++++++
+Linear TC Solution
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int sn = s.length();
+        int pn = p.length();
+        List<Integer> res = new ArrayList<>();
+        if (sn<=0 || pn<=0) return res;
+        
+        int[] pArr = new int[26];
+        for (int i = 0; i < pn; i ++)
+        {
+            char c = p.charAt(i);
+            pArr[(int)(c-'a')] ++;
+        }
+        
+        int[] sArr = new int[26];
+        for (int i = 0; i < sn; i ++)
+        {
+            char c = s.charAt(i);
+            sArr[(int)(c-'a')] ++;
+            if (i>=pn)
+            {
+                char c2 = s.charAt(i-pn);
+                sArr[(int)(c2-'a')] --;
+            }
+            
+            if (Arrays.equals(pArr,sArr))
+            {
+                res.add(i-pn+1);
+            }
+        }
+        
+        return res;
+    }
+}

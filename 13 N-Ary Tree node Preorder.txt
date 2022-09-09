@@ -1,0 +1,174 @@
+Q1) What given? root of n-ary tree	
+	root is given: in form of level order traversal ()
+
+Q3) What input? input: root = [1,null,3,2,4,null,5,6]
+	note: level is represented by null
+	1
+          /	|       \
+       3	2       4
+    /    \
+  5      6 
+
+Q1.2) What given definitions?	//Node class with val, List children with elements of Node type, 
+				default constr, param constr
+			
+	class Node {
+		public int val;
+		public List<Node> children;
+		
+		public Node() {}	
+		public Node(int _val, List<Node> _children){
+		val = _val;
+		children = _children;
+	}
+};
+
+Q2) What is n-ary tree?
+
+	
+
+Q4) What output? return preorder traversal of node values
+	What is preorder?NLR
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Solution:	
+	a.0) //For type Node
+		//What member variables for type Node? int val
+		//a List named children, data type = Node for each element, i.e list of Nodes named "children"
+		for ex
+			Node node1
+			node1.children : Gives list of children for that node		
+		//Param constructor for Node, what input? val, List of children , intiializes
+
+class Node {
+	public int val;
+	public List<Node> children;
+		
+	public Node() {}	
+	public Node(int _val, List<Node> _children){	
+	val = _val;
+	children = _children;
+	}
+};
+
+
+	a) //Create class Solution
+	class Solution {
+		a.1) //Create method preorder
+			//What output? List of integer
+			//method name = preorder
+			//what input = root node in list form	
+		public List <Integer> preorder(Node root) {
+			
+
+		a.1.2) Create Linked list named stack of type Node. Why? to do Preorder operation
+		 LinkedList<Node>Stack = new LinkedList<>();	
+		
+		a.13) Create Linked list named output_arr of type Integers.Why? to print final preorder
+		 LinkedList<Integer> output_arr = new LinkedList<>();
+
+		a.14) //What is root? type Node with list of children. Check if this root is null
+		if (root == null) {	//Why check? if root null, empty array returned
+			return output_arr;
+}
+		a.15) add root node to stack.how to add root to stack? .add		
+					//Preorder : NLR -> root,left,right
+		stack.add(root);	//why adding root to stack?
+
+		a.16) 
+		while(!stack.isEmpty()){
+			a.161) pull last element from stack. This element is of type Node
+				Node node = stack.pollLast() 	
+			a.162) add pulled element value in output_arr.Note add only integer attribute of Node class since output_arr is <Int> type Linked list
+				output_arr.add(node.val);
+			a.163) the List children is to be reversed before adding.HOw to reverse list?
+				Collctions.reverse(node.children)
+			a.164) Loop list of children, add reversed elements (Node type elements) in list one by one to stack
+				for(Node child : node.children){
+				stack.add(child);
+		}
+}		
+			return output_arr;
+		
+}
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+for ex
+		1
+	/	|	\
+	3	2	4
+           /	       \
+        5	       6
+
+root = 1 -> stack : 1 -> pull last from stack -> add end of output_arr : 1-> reverse list of children nodes of root (3,2,4 = 4,2,3) ->	loop through 4,2,3 -> add to stack 
+-> stack : 4 2 3 pull last from stack(3) : stack : 4 2 -> add to output_arr 1,3 ....
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Final code:
+
+class Solution {
+    public List<Integer> preorder(Node root) {
+        
+            LinkedList<Node> stack = new LinkedList<>();
+            LinkedList<Integer> output_arr = new LinkedList<>();
+        
+            if(root == null){
+                    return output_arr;
+            }
+        
+            stack.add(root);
+            while(!stack.isEmpty()) {
+                    Node node = stack.pullLast();		//since stack is linked list of type Node, what output? Node node
+                    output_arr.add(node.val);
+                    Collections.reverse(node.Children);		//Node class contains list, how to reverse list? collections.reverse
+                    for(Node child : node.children){		//obtain children from node.children 
+                            stack.add(child);
+                    }
+            }
+                return output_arr;
+    }
+}		
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Final working code:
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<Integer> preorder(Node root) {
+        
+            LinkedList<Node> stack = new LinkedList<>();
+            LinkedList<Integer> output_arr = new LinkedList<>();
+        
+            if(root == null){
+                    return output_arr;
+            }
+        
+            stack.add(root);
+            while(!stack.isEmpty()) {
+                    Node node = stack.pollLast();
+                    output_arr.add(node.val);
+                    Collections.reverse(node.children);
+                    for(Node child : node.children){
+                            stack.add(child);
+                    }
+            }
+                return output_arr;
+    }
+}

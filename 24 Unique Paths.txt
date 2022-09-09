@@ -1,0 +1,83 @@
+what given? 2d grid
+
+robot at grid[0][0]
+
+
+objective: move to bottom right grid[size][size]
+
+
+possible moves: down or right.
+-----------------------------------------------------
+ex m =3 n=2
+Output: 3
+x x x
+x x x 
+
+
+Input: m = 3, n = 7	//m = total no. of rows
+		   n = columns 
+
+Output? How many unique ways to reach  bottom right grid[size][size]
+
+What is 1 path: set of right and downs, in the end reaching bottom corner
+	for ex right right down 	//is path
+	          right down right	//is not path
+	//what differentiates 2? second one doesnt end at grid[m][n]
+	so we will start at grid[m][n] and trace back to grid[0][0]
+
+
+
+
+Objective:  How many unique ways to reach  bottom right grid[size][size] from grid[0][0]
+	1) how many ways to reach grid[m  ][n] from grid[m-1][n-1] = 2 way [down, right] and [right,down]
+	2) 1) how many ways to reach grid[m-1][n-1] from grid[m-1][n-1] = 2 way [down, right] and [right,down]
+
+Pseudo code:
+	what is changing here m , n  for each input
+	base case input? if m=1 , n=1 -> one unique path only
+	nearest case input? uinquePaths(m-1, n) + uniquePaths(m,n-1)
+
+Code1) Using recursion		//TC(O)
+class Solution {
+	public int uniquePaths(int m, int n) {
+		if(m ==1 || n == 1)
+			return 1;	
+		return uniquePaths(m-1, n) + uniquePaths(m, n-1);
+}
+}
+
+
+Code2Using DP, avoid recalculating
+
+
+Pseudo Code:
+
+1) create temp array dp[]
+0) make first row(i=0) and first column (i=1) 1
+1) only way to have reached any cell? above / left
+2)  traverse the remaining sub array
+	no. of ways to reach any node in subarray = no. of ways to reach cell above it + no. of ways to reach cell to the left
+
+
+
+
+Code: Working
+class Solution {
+    public int uniquePaths(int m, int n) {
+  	int [][] dp = new int[m][n];
+	for(int i=0; i< dp.length; i++)
+	{
+	  dp[i][0] = 1;
+    	}
+for(int i=0; i< dp[0].length; i++)
+	{
+	  dp[0][i] = 1;
+	}
+for(int i =1; i< dp.length; i++) {
+	for(int j = 1; j< dp[i].length; j++) {
+		dp[i][j] = dp[i-1][j] + dp[i][j-1];
+		}
+	}
+	return dp[m-1][n-1];
+}
+}

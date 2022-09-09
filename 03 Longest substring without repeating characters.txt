@@ -1,0 +1,70 @@
+What given?
+	String s //contains characters
+
+What output? 	
+
+
+How will we find these substrings
+1) 2 pointers to create a window
+2) loop string,  one by one add character to hashset until a character from current window found again
+3)  remove old character whose repeat we found
+	start window again from after removed character until a a character from current window found again
+		
+
+Ex
+	Input: "pewkew"
+	Output: 3
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Solution:
+
+class Solution{
+  public int lengthOfLongestSubstring(String s) {
+//1) Create 2 pointers int	
+	int a_pointer = 0;
+	int b_pointer = 0;	//moves out
+	
+//2) Track max length of substring
+	int max = 0;
+//3) Create hashset of characters .How to create hashset
+HashSet<Character> hash_set = new HashSet();
+
+//4) loop while second pointer is less than length of string
+while(j< S.length()) {
+	4.1) if hashaset does not contain char at b_pointer)	 
+	   if(!hash_Set.contains(S.charAt(b_pointer))) {
+		hash_set.add(S.charAt(b_pointer));
+		b_pointer++;
+		max= Math.max(hash_set.size() , max);
+	} else {
+	       HashSet.remove(S.charAt(a_pointer));	
+	       a_pointer++;
+}			
+}	
+	return max;
+}
+}
++++++++++++++++++
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int a_pointer = 0;
+        int b_pointer = 0;
+        
+        int max = 0;
+        
+        HashSet<Character> hash_set = new HashSet();
+        
+        while(b_pointer < s.length()){
+             if(!hash_set.contains(s.charAt(b_pointer))){
+                 
+                 hash_set.add(s.charAt(b_pointer));
+                 b_pointer++;
+                 max = Math.max(hash_set.size() ,max);
+             }
+            else  {
+                hash_set.remove(s.charAt(a_pointer));
+                a_pointer++;
+            }
+        }
+        return max;
+    }
+}
