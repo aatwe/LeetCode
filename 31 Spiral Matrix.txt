@@ -1,0 +1,131 @@
+Input: m x n matrix
+[
+[1,2,3],
+[4,5,6],
+[7,8,9]
+]
+
+output: traverse and elements in spiral order
+[1,2,36,9,8,7,4,5]
+How to output? List of integers?
+
+1) How to represent matrix?
+2D array : int [][] matrix
+2) take input of matrix		
+	2.0) Create a list of integer
+		How to create a list of integer? using Array list
+		List<Integer> nums=new ArrayList<Integer>();
+	2.1) Sanity check for input matrix
+		if(matrix == null ||matrix.length ==0) {return nums};
+	
+
+	2.1) traverse the matrix in spiral order
+		2.1.1) How to traverse in spiral order?
+			2.1.1. input : (start m = 0, n = 0)
+
+			For everybelow spiral we will have
+				top row, bottom row, right col. left col
+
+		
+			  spiral(arr[m][n] matrix) {
+				initially : //top row = 0   //bottom row = matrix.length-1  //left col= 0 //right col = matrix[0].length - 1; 	
+				Check if entire matrix traversed? Check if array list size = mxn size
+					int matrixsize=  matrix.length*matrix[0].length;
+					if( nums.size = size ) return nums;
+		
+				If not lets spiral on
+				while(nums.size < matrixsize) {
+				
+		 	    A)	//Spiral#1				//top row = 0   //bottom row = matrix.length-1  //left col= 0 //right col = matrix[0].length - 1; 	
+'			           a) traverse (0,0) till (0,n)		//start at  top row,left col, ---> top row,right col	
+								//add elements to arrayList nums
+								for(int i = left; i<= right; i++)
+									nums.add(matrix[top][i]);
+								// increment top by 1  //top+1
+
+			           b) traverse (1,n) till (m,n)		start at top row+1 ,right col ---> bottom row , right col
+								for(int i = top; i<= bottom ;  i++) {
+									nums.add(matrix[i][right]);
+								
+}	'								
+								//decrement right col  by 1  //rightcol -1
+			           c) back traverse (m,n-1) till (m,0)		start at bottom row, right col-1 ---> bottom row, left col
+								for(int i = right; i< left; i--) {
+									nums.add(matrix[bottom][i]);
+}
+		
+								//decrement bottom row
+			           d) back traverse  (m-1,0) till (1,0)		start at bottom row, left col -----> top row +1 ,left col
+								for(int i = right; i< left; i--) {
+									nums.add(matrix[i][left]);
+
+			//Spiral#2  , what to do before next spiral?
+					increment left
+
+			   B)  Spiral #2				//top row  = 1  //
+			           a) traverse (1,0) till (1,n-1)		
+			           b) traverse (1,n-1) till (m-1,n-1)
+			           c) backtraverse (m-1,n-1) till (m-1,1)		
+			           d) backtraverse (m-1,1) till (2, 1)
+			
+				....
+		
+			   C)  //Spiral #n
+					 i = 0 j=0	//Pattern
+			 	           row +1, col	   row+1, col-1	
+				           row+1,col-1	   row-1, col-1
+				           row-1, col-1	   row-1, col+1
+				           row-1,col+1       row+1, col+1
+			           
+		2.1.2)	//All spirals finished,  in arraylist, final traversal output is found, print arrayList
+
+	}
+
+}
+				
+	
+
+____________________________________________________________
+Code:
+class Solution {
+	public List<Integer> spiralOrder(int [][] matrix) {
+		List<Integer> nums =new ArrayList<Integer>();
+		if(matrix == null || matrix.length ==0) {
+			return nums;
+		}
+
+
+		int top = 0;
+		int bottom = matrix.length - 1;
+		int left = 0;
+		int right = matrix[0].length-1 ;		
+		int size = (matrix.length)*(matrix[0].length);
+
+		while(nums.size() < size) {
+			for(int i= left; (i<= right) && (nums.size() < size);  i++){
+				nums.add(matrix[top][i]);
+								}
+			top++;
+			for(int i= top; (i<=bottom) && (nums.size()< size); i++) {
+				nums.add(matrix[i][right]);				
+								}
+			right--;
+			for(int i= right; (i>=left) && (nums.size()< size); i--) {
+				nums.add(matrix[bottom][i]);
+								}
+			bottom--;
+			for(int i= bottom; (i>=top) && (nums.size()< size); i--) {
+				nums.add(matrix[i][left]);				}
+			left++;	
+				      }
+		return nums;
+			
+		}
+}
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+What is space complexity? 
+O(mxn)
+
+What is runtime complexity?
+O(mxn)  

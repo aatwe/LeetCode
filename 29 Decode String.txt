@@ -1,0 +1,6 @@
+What input? encoded string. 
+	What is encoded string?
+
+
+What output? decoded string
+	What is decoded string?

@@ -1,0 +1,173 @@
+1) what given?
+	2d grid : int[][]	--> box
+		rows = m, col = n
+
+	every cell contains:  \  or /
+		\ : 
+		/
+	
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+
+
+What input: inputarray[m]
+What final output: answer[]			//1 means ball fell,   -1 means ball didnt fell
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Pseudo code
+
+1) take input of grid : How to represent grid?can a grid contain no diagonal?no
+			How to represent each cell? 1 = left to right diagonal : \
+					               -1 = right to left diagonal : /	
+
+Ex : grid = [[1,1,1,-1], [-1,-1,1,1], [1,1,1,-1], [1,-1,1,-1]]
+
+1.a) calculate no. of col in grid --> this will become our no. of balls to drop
+also calculate no. of rows in grid
+
+How is a V formed? left cell = \ , right adjacent cell = /
+	if (grid[i][j] = \ && grid[i][j+1] = /) => jth column ball doesnt come out definitely
+
+
+1.b) Create final array
+
+2)drop all n balls one by one
+	
+	
+
+3) track each ball moves:
+
+col j ball falls:
+
+trackball(j)
+if cell = 1 -> falling ball goes right
+	  	update col++
+		check if V formed -> if yes update ball lost --> answer[j] = -1	
+		            if V not formed -> row ++
+if cell = -1 -> falling bal goes left
+		update col--
+		check if V formed -> if yes update ball lost
+		            if V not formed -> row ++
+
+
+when row == n
+	check if V formed
+	       if no V formed ---> find current column	
+			answer[j] = current column
+
+4) track each ball location
+Figure out how to track each ball, which cells it is moving through
+
+
+
+
+
+
+4) final arrayoutput of whaich balls came out
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Test pattern
+
+1) ball 1 falls
+	a) row =0, col=0
+		0,0 = cpos
+		a.1) if grid[0][0] = 1 -> go right
+				increment column
+				grid[0][1]
+				0,1 = next pos
+		   a.1.1) if grid[0][1]  = 1 -> go down
+				increment row
+
+		  a.1.2) 
+	
+
+
+
+		a.2) if grid[0][0] = -1 -> go left
+				decrement column
+				grid[0][-1] ---> ball lost
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+			
+	
+	
+Simple logic:
+if grid[i][j] = 1--> col+1
+	=-1--> col-1
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1) Create a class Solution
+  1.1) Create a method findBall()  -> take input of grid  nxm
+     1.1.1) find how many rows in input grid
+     1.1.2) find how many columns in input grid
+     1.1.3) Create a new output arrays ans of size no. of columns
+     1.1.4) loop over all balls one by one from 0 to no. of columns
+	A //loop over first col ball:
+	1.1.4.1) find current column of the ball = column it was dropped at
+	1.1.4.2) find next column of the ball       = -1  //dont know yet
+	1.1.4.3) traverse the path for this ball.How?
+		loop over 2d grid rows one by one
+
+		//row1
+		a) We know the current column, and we know ball has fell
+		    what will be next column ? current column + whatever is grid value at row i, column cpos
+		
+		b) Check if this next position is towards left wall / towards right wall / forming a V with current position  ------> if either case update final output array answer[j] with -1
+					ncol<0		ncol>0		 grid[i][ccol] = opposite of grid value at grid[i][ncol]
+
+		    break from traversing rows
+		    if(npos< 0 || npos>=m || grid[i][cpos]!= grid[i][npos]) {
+			    cpos =-1;
+			   break;
+		c) if above check  all ok
+			update the current column ccol with next ncol
+		//row2
+		//row3... 
+		//all rows for first ball done
+		//forloop ends
+	 //mark the ccol for first ball -> this is where ball came out from
+	//update ccol for first ball in answer[firstball] = ccol		
+	//ans[j] = ccol; 
+                  
+	B) //loop over second col balls
+	1.1.4.1)....
+	C) //loop over third col ball
+	.... all balls finished
+
+1.1.5) return answer array
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class Solution {
+    public int[] findBall(int[][] grid) {
+    int n= grid.length;  
+    int m= grid[0].length;
+	
+        
+	int[] ans = new int[m];
+        
+	for(int j=0; j<m ; j++) {
+	    int ccol =j;
+	    int ncol =-1;
+	
+	    for(int i=0; i<n; i++)  {
+		    ncol =ccol+grid[i][ccol];
+            
+		    if(ncol< 0 || ncol>=m || grid[i][ccol]!= grid[i][ncol]) {
+			    ccol =-1;
+                			    break;
+           		    }
+		 ccol=ncol;	
+     	   }
+       	ans[j] = ccol; 
+    }
+        return ans;
+   }
+}

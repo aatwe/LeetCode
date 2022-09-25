@@ -1,0 +1,69 @@
+What is happy number?
+
+Pseudo code:
+1) Get the number n , What input?n = 19
+	Check if number n >0	
+		pass into happy number process as n1
+
+
+2)  happy number process(n1) {
+	2.0) do below while n1 = 1 OR n1 s are a loop
+		2.0.1) How to find if n1 s are in a loop? hashset tracks all n1s computed, check if loop is forming
+
+
+	2.1) n1 = sum of squares of digis of n1
+		2.1.1) How to find sum of squares of digit? 
+		   2.1.1.a) Find digits
+			n%10 = units place , n/10
+			n%10 = ten's place	
+			...
+			do until  output = 0
+		  2.1.1.b) find squares of digits and add to sum until  n = 0
+			What after you add square of digits to sum?
+			Check if seen hashset contains sum  //check if sum is part of a loop
+				if seen hashset contains sum --> part of loop -> output false;
+			 	else
+					
+					check if sum = 1 ---> output: true
+					add sum to seen hashset
+					make new n as sum
+		2.1.1.c)  return true;		
+
+
+
+	2.2) if n1 = 1 -> output true
+		else output false
+
+
+
+
+happynumber process(n) {
+
+
+	condition: number n >0 , do below until either n = 1 OR  loops in a cycle (not including 1)
+	n = sum of squares of digit
+	if n  = 1 -> 	
+
+}
+________________________________________________________________________________________________
+
+class Solution {
+  public boolean isHappy(int n) {
+	HashSet<Integer> seen  = new HashSet
+	while(n > 1) {
+		int current = n;
+		int sum = 0;
+		while(current!=0) {
+			sum += (current%10) * (current%10);
+			current /= 10;
+		 }
+		if(seen.contains(sum)) {
+			return false;
+		}else  {
+		   seen.add(sum);
+		  n = sum;			
+		           }
+		  }
+	return true;	 
+   }
+}
