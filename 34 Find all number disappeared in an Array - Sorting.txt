@@ -1,0 +1,44 @@
+What given:
+
+1) array of nums : [1 to n]
+
+find all no. that dont appear in nums, and return them in array
+
+
+//Try to show your thoguht process
+
+For ex
+7,3,2,4,8,2,3,1
+
+Output:
+1,2,3,4,3,2,7,8
+
+Code:
+
+
+class Solution {
+     public List<Integer> findDisappearedNumbers(int[] arr) {
+        int i = 0;
+        while (i < arr.length) {
+            int correct = arr[i] - 1;
+            if (arr[i] != arr[correct]) { //or is arr[i] = arr[correct] //element at 0                                                                           //should be equal to element at index 2
+                swap(arr, i, correct);
+            } else {
+                i++;
+            }
+        }
+         
+        List<Integer> ans = new ArrayList<>();
+        for (int index = 0; index < arr.length; index++) {
+            if (arr[index] != index+1) {
+                ans.add(index + 1);
+            }
+        }
+        return ans;
+    }
+        static void swap ( int[] num, int first, int second){
+            int temp = num[first];
+            num[first] = num[second];
+            num[second] = temp;
+        }
+}

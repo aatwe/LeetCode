@@ -1,0 +1,80 @@
+What given? array of integers [1,n]
+	1 repeated numb er in array, find this number
+
+
+	
+1) what condition to swap? index + 1 != element
+
+2) for ex 1,3,4,2,2
+
+check if element at index 1 at correct index , yes
+		1,3,4,2,2
+
+check if element at index 2 is at correct index , no
+		1,4,3,2,2
+		1,3,4,2,2
+		1,2,3,4,2
+
+check if element at index 3 is at correct index , yes
+		1,2,3,4,2
+
+check if element at index 4 is at correct index ,yes BUT DUPLICATE, additional check: element at index = index+1
+		1,2,3,4,2
+
+		ifelement at index!= index+1
+			a) if element at index : element - 1 != element at index	(Not duplicate)
+			b) element at index : element - 1 = element at index	(duplicate no.)
+
+
+CODE:
+
+1) class Solution {
+    public int findDuplicate(int[] arr) {
+		  int i = 0;
+            while(i< arr.length) {
+
+		   if(arr[i] != i+1) {
+                int correct = arr[i]- 1;  //2 
+                if(arr[i] != arr[correct]) { 
+                    swap(arr,i, correct);
+                } else {
+                    return arr[i];
+                }
+            } else {
+				i++;
+		  }
+        }
+	return -1;
+	}
+    static void swap (int[] num, int first, int second) {
+            int temp = num[first];
+            num[first] = num[second];
+            num[second] = temp;
+    }
+
+}
+
+
+	
+
+
+
+
+
+        static void sort(int[] arr){
+            //3,4,2,5,1
+            int i = 0;
+            while(i< arr.length) {
+                int correct = arr[i] - 1;  //2 //what is correct? correct position of ith element
+                if(arr[i] != i+1) { //or is arr[i] = arr[correct] //element at 0 should be equal to element at index 2
+                    swap(arr,i, correct);
+                } else {
+                    i++;
+                }
+            }
+        }
+         static void swap (int[] arr, int first, int second) {
+            int temp = arr[first];
+            arr[first] = arr[second];
+            arr[second] = temp;
+    }

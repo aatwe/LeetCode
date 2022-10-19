@@ -1,0 +1,83 @@
+What given?
+array
+
+
+What output? smallest, missing +ve integer
+
+
+For ex
+[3,4,-1,1]
+-> Sort = -1,1,3,4
+	missing: 2
+
+
+Ex2
+7,8,9,11,12
+sort : 7,8,9,11,12
+missing: 1 does not exist in array + is smallest +ve integer
+
+
+
+Ex3
+1,2,0
+Sort: 0,1,2
+missing;3
+
+
+Q) Wfrom where do we have to search? from start i.e no. 1
+Hint cyclic sort
+while sorting:
+	Also can ignore -ve elements
+	can ignore elements after n
+
+Q) ex of ignoring while sorting array?
+3,4,-1,1
+-1,4,3,1	//ignore -1. Why? we dont want to start from negative
+-1,1,3,4
+ 1,-1,3,4	//Sorted
+
+
+
+-> Find first missing positive no.
+1,-1,3,4	//index 0 : valid no. //1 YES
+1,-1,3,4   //index 1 : valid no.	//-1 NO //should be  2
+
+What is first missing positive no.? 2
+
+
+Q) Ex 2
+given: 3,4,2,1
+
+sort : 1,2,3,4
+
+What missing? all index have correct no.
+	What is first missing positive no.? n
+
+
+public static int firstMissingPositive(int[] nums) {
+        int i=0;
+	   while(i< arr.length) {
+		int correct = arr[i] - 1;
+		if(arr[i]> 0 && arr[i] <= arr.length && arr[i] != arr[correct]) {	//note '<='   -> since ignoring no. greater than n
+			swap(arr,i,correct);
+		}else{
+			i++;
+}
+}
+
+
+for(int index = 0; index<arr.length; index++) {
+	if(arr[index] != index + 1) {
+		return index;
+	}
+}
+
+return arr.length + 1;
+
+}
+
+static void swap(int[] arr, int first, int second) {
+	int temp = arr[first];
+	arr[first] = arr[second];
+	arr[second] = temp; 
+}

@@ -1,0 +1,51 @@
+Given an array nums containing n distinct numbers
+ in the range [0, n], return the only number in the range that is missing from the array.
+
+
+
+Q) What given ? array of no. 0 to n
+	since 0 to n , use cycic sort (Since O(1) extra space) and  (O(n) runtime complexity )
+
+ 
+
+
+
+Q) How to return only no. missing from range?'
+
+
+1) sort the array
+
+2) run a loop check on each element, 
+	case1: element is present in array
+	if i!= arr[i] -> return arr[i]
+	
+	case3: element is not present in array
+
+3)
+
+
+Code:
+class Solution {
+    public int missingNumber(int[] arr) {
+            int i = 0;
+            while(i< arr.length) {
+                if(arr[i] < arr.length && arr[i] != arr[arr[i]]) { //or is arr[i] = arr[correct] //element at 0                                                             should be equal to element at index 2
+                    swap(arr,i, arr[i]);
+                } else {
+                    i++;
+                }
+            }
+
+            for (int index = 0; index < arr.length; index++ ) {
+                if (arr[index] != index) {
+                    return index;
+                }
+        }
+        return arr.length;
+        }
+          void swap (int[] arr, int first, int second) {
+            int temp = arr[first];
+            arr[first] = arr[second];
+            arr[second] = temp;
+    } 
+    }
