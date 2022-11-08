@@ -1,0 +1,273 @@
+83:
+What given?
+
+	a) head of sorted linked list
+
+OBjective: delete all duplicates , return sorted linked list
+
+
+
+for ex
+
+1 --> 1 --> 2	
+
+ 1 --> 2	 
+
+
+dont think solution, think what objective
+
+
+What diagram		//note list given sorted
+
+head
+   link1
+     |       
+1   -->  1  -->   1   -->   2   -->   4	
+
+ 1 --> 2	--> 4 
+
+
+How to remove all duplicats?
+
+option1: break link 1
+		connect index 0 to index 2
+
+option2: break link1 and linke 2
+		sorted list found
+
+ConclusioN; just check 1 by 1 if next node = current node 
+			if so -> skip it // dont include
+				how to skip it? 
+					if (currentnode.next.val= currentnode.val
+							currentnode.next = current.next.next
+
+			else //new element found
+				currentnode = currentnode.next
+		
+		do above until current node = null
+
+	tail = node
+	tail.next = null
+------------------------------------------------
+
+a) Create duplicates()
+b)  Create node , point to head  //head was given
+c) CHeck if currentnode.next.val= currentnode.val
+		//add a null check in while
+		decrease the size
+
+------------------------------------------------
+public void duplicates() {
+  Node node = head;
+
+	while(node.next != null) {
+	   if(node.value == node.next.value){
+			node.next = node.next.next;
+			size --;
+		} else {
+			node = node.next;
+		}
+	}
+	tail = node;
+	tail.next= null;
+
+}
+
+
+public static void main(String[] args) {
+	LL list = new LL();
+	list.insertLast(1);
+	list.insertLast(2);
+	list.insertLast(3);
+	list.insertLast(3);
+	list.insertLast(3);
+	
+	list.display();
+	list.duplicates();
+	list.display();
+	
+
+} 
+
+
+------------------------------------------------
+Code: //leetcode  //make a few changes
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode node) {
+    
+    if(node == null){
+        return node;        
+    }    
+        
+        
+    ListNode head = node;    
+	while(node.next != null) {
+	   if(node.val == node.next.val){
+			node.next = node.next.next;
+		} else {
+			node = node.next;
+		}
+	 }
+     return head;   
+   }
+}
+
+---------------------------------------------------
+Code: Java
+
+
+public class LL {
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public LL() {
+        this.size = 0;
+    }
+
+    public void duplicates() {
+        Node node = head;
+
+        while(node.next != null) {
+            if(node.value == node.next.value){
+                node.next = node.next.next;
+                size --;
+            } else {
+                node = node.next;
+            }
+        }
+        tail = node;
+        tail.next= null;
+
+    }
+
+
+    public void insertRec(int val, int index) {
+        head = insertRec(val, index, head);
+    }
+    private Node insertRec(int val, int index, Node node) {
+        if (index == 0) {
+            Node temp = new Node(val, node);
+            size++;
+            return temp;
+        }
+
+        node.next = insertRec(val, index-1, node.next);
+        return node;
+    }
+
+    public int deleteLast(){
+        if(size<=1){
+            return deleteFirst();
+        }
+
+        Node secondLast = get(size - 2);	//get the second last node
+        int val = tail.value;
+        tail = secondLast;
+        tail.next = null;
+
+        return val;
+
+    }
+    public Node get(int index) {
+        Node node = head;
+
+        for(int i = 0;i< index; i++){
+            node = node.next;
+        }
+        return node; 		//returns reference pointer to that node
+    }
+
+    public int deleteFirst() {
+        int val = head.value;	//get head value
+        head = head.next;	//point head reference to next
+        if(head == null){	//add corner case
+            tail = null;		//if head null,make tail also null
+        }
+        size--;
+        return val;
+
+    }
+
+    public void insert(int val, int index){
+        if(index == 0){
+            insertFirst(val);
+            return;
+        }
+        if(index == size){
+            insertLast(val);
+            return;
+        }
+        Node temp = head;
+        for(int i=1; i< index; i++) {
+            temp = temp.next;
+        }
+
+        Node node = new Node(val, temp.next);	//before breaking link point new node
+        temp.next = node;			//break the link
+        size++;
+    }
+    public void insertLast(int val){
+        if(tail == null){
+            insertFirst(val);
+            return;
+        }
+        Node node = new Node(val);
+        tail.next = node;
+        tail = node;
+        size++;
+    }
+
+
+    public void insertFirst(int val) {
+        Node node = new Node(val);
+        node.next = head;
+        head = node;
+
+        if (tail == null) {
+            tail = head;
+        }
+        size += 1;
+    }
+
+    public void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.value + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("END");
+    }
+
+    private class Node {
+        private int value;
+        private Node next;
+
+        public Node(int value) {
+            this.value = value;
+        }
+
+        public Node(int value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
+
+}
+
+
+
+What TC? O(n)	
+
+What SC? no extra space O(1)
